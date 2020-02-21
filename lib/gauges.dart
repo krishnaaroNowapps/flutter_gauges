@@ -9,7 +9,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:intl/intl.dart' show NumberFormat;
-import 'package:charts_flutter_core/core.dart';
 
 part './src/radial_gauge/gauge/radial_gauge.dart';
 part './src/radial_gauge/axis/gauge_axis.dart';

@@ -479,7 +479,6 @@ class _SfRadialGaugeState extends State<SfRadialGauge>
   ///
   @override
   Widget build(BuildContext context) {
-    ChartsFlutterCore.triggerCore(context);
     widget._radialGaugeState = this;
     final ThemeData _theme = Theme.of(context);
     widget._gaugeTheme.initializeGaugeTheme(_theme);
