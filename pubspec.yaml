@@ -1,7 +1,6 @@
-name: syncfusion_flutter_gauges
-description: Syncfusion flutter gauges library includes data visualization widgets such as radial gauge, which is written in dart, to create modern, interactive, and animated gauges.
+name: flutter_gauges
+description: Flutter gauges library to create interactive and animated gauges.
 version: 17.4.50-beta
-homepage: https://github.com/syncfusion/flutter-examples
 
 environment:
   sdk: ">=2.1.0 <3.0.0"

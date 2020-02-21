@@ -11,7 +11,6 @@ import 'package:flutter/services.dart' show rootBundle;
 import 'package:intl/intl.dart' show NumberFormat;
 import 'package:syncfusion_flutter_core/core.dart';
 
-// export circular gauge library
 part './src/radial_gauge/gauge/radial_gauge.dart';
 part './src/radial_gauge/axis/gauge_axis.dart';
 part './src/radial_gauge/utils/enum.dart';
