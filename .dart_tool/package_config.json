@@ -2,6 +2,12 @@
   "configVersion": 2,
   "packages": [
     {
+      "name": "charts_flutter_core",
+      "rootUri": "file:///Users/kriss/Documents/sdk/flutter/.pub-cache/git/charts_flutter_core-3af84bf71f71008f7098b3991b9406cb2107c08b/",
+      "packageUri": "lib/",
+      "languageVersion": "2.1"
+    },
+    {
       "name": "collection",
       "rootUri": "file:///Users/kriss/Documents/sdk/flutter/.pub-cache/hosted/pub.dartlang.org/collection-1.14.11",
       "packageUri": "lib/",
@@ -48,12 +54,6 @@
       "rootUri": "file:///Users/kriss/Documents/sdk/flutter/bin/cache/pkg/sky_engine",
       "packageUri": "lib/",
       "languageVersion": "1.11"
-    },
-    {
-      "name": "syncfusion_flutter_core",
-      "rootUri": "file:///Users/kriss/Documents/sdk/flutter/.pub-cache/git/charts_flutter_core-60bef56125f6083b8d16e1699b90e118deab8939/",
-      "packageUri": "lib/",
-      "languageVersion": "2.1"
     },
     {
       "name": "typed_data",
@@ -104,7 +104,7 @@
       "languageVersion": "2.1"
     }
   ],
-  "generated": "2020-02-21T06:50:42.689009Z",
+  "generated": "2020-02-21T07:35:44.385701Z",
   "generator": "pub",
   "generatorVersion": "2.8.0-dev.5.0.flutter-fc3af737c7"
 }

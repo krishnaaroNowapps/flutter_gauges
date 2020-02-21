@@ -2,6 +2,13 @@
   <library name="Dart Packages" type="DartPackagesLibraryType">
     <properties>
       <option name="packageNameToDirsMap">
+        <entry key="charts_flutter_core">
+          <value>
+            <list>
+              <option value="$PROJECT_DIR$/../../../../sdk/flutter/.pub-cache/git/charts_flutter_core-3af84bf71f71008f7098b3991b9406cb2107c08b/lib" />
+            </list>
+          </value>
+        </entry>
         <entry key="collection">
           <value>
             <list>
@@ -58,13 +65,6 @@
             </list>
           </value>
         </entry>
-        <entry key="syncfusion_flutter_core">
-          <value>
-            <list>
-              <option value="$PROJECT_DIR$/../../../../sdk/flutter/.pub-cache/git/charts_flutter_core-60bef56125f6083b8d16e1699b90e118deab8939/lib" />
-            </list>
-          </value>
-        </entry>
         <entry key="typed_data">
           <value>
             <list>
@@ -117,7 +117,7 @@
       </option>
     </properties>
     <CLASSES>
-      <root url="file://$PROJECT_DIR$/../../../../sdk/flutter/.pub-cache/git/charts_flutter_core-60bef56125f6083b8d16e1699b90e118deab8939/lib" />
+      <root url="file://$PROJECT_DIR$/../../../../sdk/flutter/.pub-cache/git/charts_flutter_core-3af84bf71f71008f7098b3991b9406cb2107c08b/lib" />
       <root url="file://$PROJECT_DIR$/../../../../sdk/flutter/.pub-cache/hosted/pub.dartlang.org/collection-1.14.11/lib" />
       <root url="file://$PROJECT_DIR$/../../../../sdk/flutter/.pub-cache/hosted/pub.dartlang.org/intl-0.16.1/lib" />
       <root url="file://$PROJECT_DIR$/../../../../sdk/flutter/.pub-cache/hosted/pub.dartlang.org/meta-1.1.8/lib" />
