@@ -1,6 +1,6 @@
 name: flutter_gauges
 description: Flutter gauges library to create interactive and animated gauges.
-version: 17.4.50-beta
+version: 1.0.0
 
 environment:
   sdk: ">=2.1.0 <3.0.0"
