@@ -22,8 +22,7 @@ class GaugeAnnotation {
       this.angle,
       this.verticalAlignment = GaugeAlignment.center,
       this.positionFactor = 0})
-      : assert(positionFactor != null),
-        assert(positionFactor >= 0) {
+      : assert(positionFactor >= 0) {
     _opacity = 0;
     _left = 0;
     _top = 0;
@@ -43,7 +42,7 @@ class GaugeAnnotation {
   ///        ));
   ///}
   /// ```
-  final Widget widget;
+  final Widget? widget;
 
   /// Specifies the axis value for positioning annotation.
   ///
@@ -58,7 +57,7 @@ class GaugeAnnotation {
   ///        ));
   ///}
   /// ```
-  final double axisValue;
+  final double? axisValue;
 
   /// Specifies the horizontal alignment for positioning the annotation widget.
   ///
@@ -132,56 +131,56 @@ class GaugeAnnotation {
   ///        ));
   ///}
   /// ```
-  final double angle;
+  final double? angle;
 
   /// Specifies the offset of positioning the annotation
-  Offset _annotationPosition;
+  late Offset _annotationPosition;
 
   /// Specifies the actual angle
-  double _angle;
+  double? _angle;
 
   /// Specifies the radian value of annotation
-  double _radian;
+  late double _radian;
 
   /// Specifies the axis bound to annotation
-  RadialAxis _axis;
+  late RadialAxis _axis;
 
   /// Specifies the size of annotation widget
-  Size _annotationSize;
+  late Size _annotationSize;
 
   /// Specifies the opacity
-  double _opacity;
+  late double _opacity;
 
   /// Specifies the left value for positioning the annotation
-  double _left;
+  double? _left;
 
   /// Specifies the top value for positioning the annotation
-  double _top;
+  double? _top;
 
-  bool _isOldAnnotation;
+  late bool _isOldAnnotation;
 
   /// Calculates the offset for positioning the annotation
   void _calculatePosition() {
     final double _value = positionFactor != null ? positionFactor : 0;
     final double _offset = _value * (_axis._radius);
     _angle = _calculateActualAngle();
-    _radian = _degreeToRadian(_angle);
+    _radian = _degreeToRadian(_angle!);
     final double _x = (_axis._axisSize.width / 2) +
-        (_offset - (_axis._actualAxisWidth / 2)) * math.cos(_radian) -
+        (_offset - (_axis._actualAxisWidth! / 2)) * math.cos(_radian) -
         _axis._centerX;
     final double _y = (_axis._axisSize.height / 2) +
-        (_offset - (_axis._actualAxisWidth / 2)) * math.sin(_radian) -
+        (_offset - (_axis._actualAxisWidth! / 2)) * math.sin(_radian) -
         _axis._centerY;
     _annotationPosition = Offset(_x, _y);
   }
 
   /// Calculates the actual angle value
-  double _calculateActualAngle() {
-    double _actualValue = 0;
+  double? _calculateActualAngle() {
+    double? _actualValue = 0;
     if (angle != null) {
       _actualValue = angle;
     } else if (axisValue != null) {
-      _actualValue = (_axis.valueToFactor(axisValue) * _axis._sweepAngle) +
+      _actualValue = (_axis.valueToFactor(axisValue!) * _axis._sweepAngle!) +
           _axis.startAngle;
     }
 

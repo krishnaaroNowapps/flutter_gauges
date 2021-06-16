@@ -19,22 +19,22 @@ class _AnnotationRenderer extends StatefulWidget {
         );
 
   /// specifies the annotation
-  GaugeAnnotation annotation;
+  GaugeAnnotation? annotation;
 
   /// Specifies the key annotation renderer
-  GlobalKey key;
+  GlobalKey? key;
 
   /// Specifies the radial gauge
-  SfRadialGauge gauge;
+  SfRadialGauge? gauge;
 
   /// Specifies the annotation axis
-  RadialAxis axis;
+  RadialAxis? axis;
 
   /// Specifies the interval duration
-  List<double> interval;
+  List<double?>? interval;
 
   /// Specifies the animation duration
-  int duration;
+  int? duration;
 
   @override
   State<StatefulWidget> createState() {
@@ -46,52 +46,52 @@ class _AnnotationRenderer extends StatefulWidget {
 class _AnnotationRendererState extends State<_AnnotationRenderer>
     with SingleTickerProviderStateMixin {
   /// Holds the animation controller
-  AnimationController animationController;
+  AnimationController? animationController;
 
   /// Holds the animation value
-  Animation<double> animation;
+  late Animation<double> animation;
 
   @override
   void initState() {
-    if (widget.gauge._needsToAnimateAnnotation) {
+    if (widget.gauge!._needsToAnimateAnnotation) {
       animationController = AnimationController(vsync: this)
-        ..duration = Duration(milliseconds: widget.duration);
+        ..duration = Duration(milliseconds: widget.duration!);
       animation = Tween<double>(begin: 0, end: 1).animate(CurvedAnimation(
-          parent: animationController,
-          curve: Interval(widget.interval[0], widget.interval[1],
+          parent: animationController!,
+          curve: Interval(widget.interval![0]!, widget.interval![1]!,
               curve: Curves.fastOutSlowIn)));
     }
     super.initState();
 
-    WidgetsBinding.instance
+    WidgetsBinding.instance!
         .addPostFrameCallback((_) => _calculateAnnotationPosition(context));
   }
 
   /// Calculates the annotation position based on its size
   void _calculateAnnotationPosition(BuildContext _context) {
-    final RenderBox renderBox = _context.findRenderObject();
+    final RenderBox? renderBox = _context.findRenderObject() as RenderBox?;
     setState(() {
-      widget.annotation._annotationSize = renderBox.size;
-      widget.annotation._opacity = 1;
-      widget.annotation._left = widget.annotation._annotationPosition.dx -
-          (widget.annotation.horizontalAlignment == GaugeAlignment.near
+      widget.annotation!._annotationSize = renderBox!.size;
+      widget.annotation!._opacity = 1;
+      widget.annotation!._left = widget.annotation!._annotationPosition.dx -
+          (widget.annotation!.horizontalAlignment == GaugeAlignment.near
               ? 0
-              : widget.annotation.horizontalAlignment == GaugeAlignment.center
-                  ? widget.annotation._annotationSize.width / 2
-                  : widget.annotation._annotationSize.width);
-      widget.annotation._top = widget.annotation._annotationPosition.dy -
-          (widget.annotation.verticalAlignment == GaugeAlignment.near
+              : widget.annotation!.horizontalAlignment == GaugeAlignment.center
+                  ? widget.annotation!._annotationSize.width / 2
+                  : widget.annotation!._annotationSize.width);
+      widget.annotation!._top = widget.annotation!._annotationPosition.dy -
+          (widget.annotation!.verticalAlignment == GaugeAlignment.near
               ? 0
-              : widget.annotation.verticalAlignment == GaugeAlignment.center
-                  ? widget.annotation._annotationSize.height / 2
-                  : widget.annotation._annotationSize.height);
+              : widget.annotation!.verticalAlignment == GaugeAlignment.center
+                  ? widget.annotation!._annotationSize.height / 2
+                  : widget.annotation!._annotationSize.height);
     });
   }
 
   @override
   void dispose() {
     if (animationController != null) {
-      animationController
+      animationController!
           .dispose(); // Need to dispose the animation controller instance otherwise it will cause memory leak
     }
 
@@ -100,39 +100,39 @@ class _AnnotationRendererState extends State<_AnnotationRenderer>
 
   @override
   Widget build(BuildContext context) {
-    if (widget.gauge._needsToAnimateAnnotation) {
-      animationController.forward(from: 0);
+    if (widget.gauge!._needsToAnimateAnnotation) {
+      animationController!.forward(from: 0);
       return Positioned(
-          left: widget.annotation._left,
-          top: widget.annotation._top,
+          left: widget.annotation!._left,
+          top: widget.annotation!._top,
           child: AnimatedBuilder(
-              animation: animationController,
-              child: widget.annotation.widget,
-              builder: (BuildContext context, Widget _widget) {
+              animation: animationController!,
+              child: widget.annotation!.widget,
+              builder: (BuildContext context, Widget? _widget) {
                 _updateAnimation();
                 return Opacity(
-                    opacity: widget.annotation._opacity * animation.value,
-                    child: widget.annotation.widget);
+                    opacity: widget.annotation!._opacity * animation.value,
+                    child: widget.annotation!.widget);
               }));
     } else {
       return Positioned(
-          left: widget.annotation._left,
-          top: widget.annotation._top,
+          left: widget.annotation!._left,
+          top: widget.annotation!._top,
           child: Opacity(
-              opacity: widget.annotation._isOldAnnotation
+              opacity: widget.annotation!._isOldAnnotation
                   ? 1
-                  : widget.annotation._opacity,
-              child: widget.annotation.widget));
+                  : widget.annotation!._opacity,
+              child: widget.annotation!.widget));
     }
   }
 
   /// To update the animation of annotation
   void _updateAnimation() {
-    if (widget.gauge.axes[widget.gauge.axes.length - 1] == widget.axis &&
-        widget.axis.annotations[widget.axis.annotations.length - 1] ==
+    if (widget.gauge!.axes[widget.gauge!.axes.length - 1] == widget.axis &&
+        widget.axis!.annotations![widget.axis!.annotations!.length - 1] ==
             widget.annotation &&
         animation.value == 1) {
-      widget.gauge._needsToAnimateAnnotation = false;
+      widget.gauge!._needsToAnimateAnnotation = false;
     }
   }
 }

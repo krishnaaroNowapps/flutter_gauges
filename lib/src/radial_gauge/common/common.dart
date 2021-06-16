@@ -11,7 +11,7 @@ class GaugeTextStyle {
       this.fontSize = 12});
 
   ///Specifies the text color
-  Color color;
+  Color? color;
 
   /// Specifies the font family
   String fontFamily;
@@ -47,8 +47,8 @@ class GaugeTextStyle {
 class GaugeTitle {
   /// Creates the gauge title
   GaugeTitle(
-      {@required this.text,
-      TextStyle textStyle,
+      {required this.text,
+      TextStyle? textStyle,
       this.alignment = GaugeAlignment.center,
       this.borderColor,
       this.borderWidth = 0,
@@ -109,7 +109,7 @@ class GaugeTitle {
   ///        ));
   ///}
   ///```
-  final Color backgroundColor;
+  final Color? backgroundColor;
 
   /// Customizes the border color of the gauge title.
   ///
@@ -126,7 +126,7 @@ class GaugeTitle {
   ///        ));
   ///}
   ///```
-  final Color borderColor;
+  final Color? borderColor;
 
   /// Specifies the border width of the gauge title.
   ///
@@ -254,7 +254,7 @@ class MajorTickStyle {
   ///        ));
   ///}
   /// ```
-  final Color color;
+  final Color? color;
 
   /// Specifies the dash array to draw the dashed line.
   ///
@@ -268,7 +268,7 @@ class MajorTickStyle {
   ///        ));
   ///}
   /// ```
-  final List<double> dashArray;
+  final List<double>? dashArray;
 }
 
 /// Represents the minor tick style.
@@ -289,10 +289,10 @@ class MinorTickStyle extends MajorTickStyle {
   /// Creates the instance for customizing the minor ticks
   MinorTickStyle(
       {double length = 5,
-      GaugeSizeUnit lengthUnit,
-      Color color,
+      GaugeSizeUnit? lengthUnit,
+      Color? color,
       double thickness = 1.5,
-      List<double> dashArray})
+      List<double>? dashArray})
       : assert(length >= 0),
         assert(thickness >= 0),
         super(
@@ -375,7 +375,7 @@ class AxisLineStyle {
   ///        ));
   ///}
   /// ```
-  final Color color;
+  final Color? color;
 
   /// Specifies the corner style for axis line.
   ///
@@ -412,7 +412,7 @@ class AxisLineStyle {
   ///        ));
   ///}
   /// ```
-  final List<double> dashArray;
+  final List<double>? dashArray;
 
   /// Specifies the gradient color for the axis line
   ///
@@ -431,7 +431,7 @@ class AxisLineStyle {
   ///        ));
   ///}
   /// ```
-  final Gradient gradient;
+  final Gradient? gradient;
 }
 
 /// Holds the axis label information.
@@ -444,7 +444,7 @@ class CircularAxisLabel {
   GaugeTextStyle labelStyle;
 
   /// It holds size of label
-  Size labelSize;
+  late Size labelSize;
 
   /// It holds text of label to be print
   String text;
@@ -453,61 +453,61 @@ class CircularAxisLabel {
   num index;
 
   ///Specifies the value of the labels
-  num value;
+  num? value;
 
   /// Holds the label position
-  Offset position;
+  late Offset position;
 
   /// Holds the corresponding angle for the label
-  double angle;
+  late double angle;
 
   /// Specifies whether to rotate the corresponding labels
-  final bool _needsRotateLabel;
+  final bool? _needsRotateLabel;
 }
 
 /// Represents the arc data
 class _ArcData {
   /// Represents the start angle
-  double _startAngle;
+  late double _startAngle;
 
   /// Represents the end angle
-  double _endAngle;
+  late double _endAngle;
 
   /// Represents the arc rect
-  Rect _arcRect;
+  late Rect _arcRect;
 }
 
 /// Specifies the offset value of tick
 class _TickOffset {
   /// Holds the start point
-  Offset startPoint;
+  late Offset startPoint;
 
   /// Holds the end point
-  Offset endPoint;
+  late Offset endPoint;
 
   /// Holds the tick value
-  double value;
+  double? value;
 }
 
 /// Hold the onLabelCreated event arguments
 class AxisLabelCreatedArgs {
   /// Holds the label text
-  String text;
+  String? text;
 
   /// Specifies the label style
-  GaugeTextStyle labelStyle;
+  GaugeTextStyle? labelStyle;
 
   /// Specifies whether to rotate the label
-  bool canRotate;
+  bool? canRotate;
 }
 
 /// Holds the pointer value changing event arguments
 class ValueChangingArgs {
   /// Specifies the value which is tapped
-  double value;
+  double? value;
 
   /// Specifies whether to cancel the pointer dragging event
-  bool cancel;
+  bool? cancel;
 }
 
 /// Represents the tail style
@@ -553,7 +553,7 @@ class TailStyle {
   ///        ));
   ///}
   ///```
-  final Color color;
+  final Color? color;
 
   /// Specifies the width of the tail.
   ///
@@ -640,7 +640,7 @@ class TailStyle {
   ///        ));
   ///}
   /// ```
-  final Color borderColor;
+  final Color? borderColor;
 
   /// Specifies the gradient color of tail.
   ///
@@ -664,7 +664,7 @@ class TailStyle {
   ///        ));
   ///}
   /// ```
-  final LinearGradient gradient;
+  final LinearGradient? gradient;
 }
 
 /// Represents the knob style of needle pointer.
@@ -759,7 +759,7 @@ class KnobStyle {
   ///        ));
   ///}
   /// ```
-  final Color color;
+  final Color? color;
 
   /// Specifies the knob border color.
   ///
@@ -776,5 +776,5 @@ class KnobStyle {
   ///        ));
   ///}
   /// ```
-  final Color borderColor;
+  final Color? borderColor;
 }

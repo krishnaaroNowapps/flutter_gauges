@@ -16,28 +16,26 @@ class RangePointer extends GaugePointer {
   /// Creates the range pointer
   RangePointer(
       {double value = 0,
-      bool enableDragging,
-      ValueChanged<double> onValueChanged,
-      ValueChanged<double> onValueChangeStart,
-      ValueChanged<double> onValueChangeEnd,
-      ValueChanged<ValueChangingArgs> onValueChanging,
-      AnimationType animationType,
+      bool? enableDragging,
+      ValueChanged<double?>? onValueChanged,
+      ValueChanged<double?>? onValueChangeStart,
+      ValueChanged<double?>? onValueChangeEnd,
+      ValueChanged<ValueChangingArgs>? onValueChanging,
+      AnimationType? animationType,
       this.cornerStyle = CornerStyle.bothFlat,
       this.gradient,
-      bool enableAnimation,
+      bool? enableAnimation,
       double animationDuration = 1000,
       this.pointerOffset = 0,
       this.sizeUnit = GaugeSizeUnit.logicalPixel,
       this.width = 10,
       this.color})
       : assert(animationDuration > 0),
-        assert(value != null),
         assert(width >= 0),
-        assert(pointerOffset != null),
         assert((gradient != null && gradient is SweepGradient) ||
             gradient == null),
         super(
-            value: value ?? 0,
+            value: value,
             enableDragging: enableDragging ?? false,
             animationType: animationType ?? AnimationType.ease,
             onValueChanged: onValueChanged,
@@ -45,7 +43,7 @@ class RangePointer extends GaugePointer {
             onValueChangeEnd: onValueChangeEnd,
             onValueChanging: onValueChanging,
             enableAnimation: enableAnimation ?? false,
-            animationDuration: animationDuration ?? 1000);
+            animationDuration: animationDuration);
 
   /// Specifies the position value for pointer either in logical pixel or radius factor.
   ///
@@ -111,7 +109,7 @@ class RangePointer extends GaugePointer {
   ///        ));
   ///}
   /// ```
-  final Color color;
+  final Color? color;
 
   /// Specifies the corner style of range pointer.
   ///
@@ -149,67 +147,67 @@ class RangePointer extends GaugePointer {
   ///        ));
   ///}
   /// ```
-  final Gradient gradient;
+  final Gradient? gradient;
 
   /// Holds the start arc value
-  double _startArc;
+  late double _startArc;
 
   /// Holds the end arc value
-  double _endArc;
+  late double _endArc;
 
   /// Holds the actual range thickness
-  double _actualRangeThickness;
+  late double _actualRangeThickness;
 
   /// Specifies the range arc top
-  double _rangeArcTop;
+  late double _rangeArcTop;
 
   /// Specifies the range arc bottom
-  double _rangeArcBottom;
+  late double _rangeArcBottom;
 
   /// Specifies the range arc left
-  double _rangeArcLeft;
+  late double _rangeArcLeft;
 
   /// Specifies the range arc right
-  double _rangeArcRight;
+  late double _rangeArcRight;
 
   /// Specifies the arc rect
-  Rect _arcRect;
+  Rect? _arcRect;
 
   /// Specifies the arc path
-  Path _arcPath;
+  late Path _arcPath;
 
   /// Specifies the start radian of range arc
-  double _startCornerRadian;
+  late double _startCornerRadian;
 
   /// Specifies the sweep radian of range arc
-  double _sweepCornerRadian;
+  double? _sweepCornerRadian;
 
   /// Specifies the center value for range corner
-  double _cornerCenter;
+  late double _cornerCenter;
 
   /// Specifies the angle for corner cap
-  double _cornerAngle;
+  double? _cornerAngle;
 
   /// Specifies the actual pointer offset value
-  double _actualPointerOffset;
+  late double _actualPointerOffset;
 
   /// Specifies total offset for the range pointer
-  double _totalOffset;
+  late double _totalOffset;
 
   /// Method to calculate pointer position
   @override
   void _calculatePosition() {
-    _currentValue = _minMax(_currentValue, _axis.minimum, _axis.maximum);
+    _currentValue = _minMax(_currentValue!, _axis.minimum, _axis.maximum);
     _actualRangeThickness = _axis._calculateActualValue(width, sizeUnit, false);
     _actualPointerOffset =
         _axis._calculateActualValue(pointerOffset, sizeUnit, true);
     _totalOffset = _actualPointerOffset < 0
         ? _axis._calculateAxisOffset() + _actualPointerOffset
-        : (_actualPointerOffset + _axis._axisOffset);
-    _startArc = (_axis.valueToFactor(_axis.minimum) * _axis._sweepAngle) +
+        : (_actualPointerOffset + _axis._axisOffset!);
+    _startArc = (_axis.valueToFactor(_axis.minimum) * _axis._sweepAngle!) +
         _axis.startAngle;
     final double _endAngle =
-        (_axis.valueToFactor(_currentValue) * _axis._sweepAngle) +
+        (_axis.valueToFactor(_currentValue!) * _axis._sweepAngle!) +
             _axis.startAngle;
     _endArc = _endAngle - _startArc;
 
@@ -232,42 +230,42 @@ class RangePointer extends GaugePointer {
         _rangeArcLeft, _rangeArcTop, _rangeArcRight, _rangeArcBottom);
     _arcPath = Path();
     _arcPath.arcTo(
-        _arcRect, _degreeToRadian(_startArc), _degreeToRadian(_endArc), true);
+        _arcRect!, _degreeToRadian(_startArc), _degreeToRadian(_endArc), true);
     _calculateCornerStylePosition();
   }
 
   /// Calculates the rounded corner position
   void _calculateCornerStylePosition() {
-    _cornerCenter = (_arcRect.right - _arcRect.left) / 2;
+    _cornerCenter = (_arcRect!.right - _arcRect!.left) / 2;
     _cornerAngle = _cornerRadiusAngle(_cornerCenter, _actualRangeThickness / 2);
 
     switch (cornerStyle) {
       case CornerStyle.startCurve:
         {
           _startCornerRadian = _axis.isInversed
-              ? _degreeToRadian(-_cornerAngle)
-              : _degreeToRadian(_cornerAngle);
+              ? _degreeToRadian(-_cornerAngle!)
+              : _degreeToRadian(_cornerAngle!);
           _sweepCornerRadian = _axis.isInversed
-              ? _degreeToRadian(_endArc + _cornerAngle)
-              : _degreeToRadian(_endArc - _cornerAngle);
+              ? _degreeToRadian(_endArc + _cornerAngle!)
+              : _degreeToRadian(_endArc - _cornerAngle!);
         }
         break;
       case CornerStyle.endCurve:
         {
           _startCornerRadian = _degreeToRadian(0);
           _sweepCornerRadian = _axis.isInversed
-              ? _degreeToRadian(_endArc + _cornerAngle)
-              : _degreeToRadian(_endArc - _cornerAngle);
+              ? _degreeToRadian(_endArc + _cornerAngle!)
+              : _degreeToRadian(_endArc - _cornerAngle!);
         }
         break;
       case CornerStyle.bothCurve:
         {
           _startCornerRadian = _axis.isInversed
-              ? _degreeToRadian(-_cornerAngle)
-              : _degreeToRadian(_cornerAngle);
+              ? _degreeToRadian(-_cornerAngle!)
+              : _degreeToRadian(_cornerAngle!);
           _sweepCornerRadian = _axis.isInversed
-              ? _degreeToRadian(_endArc + 2 * _cornerAngle)
-              : _degreeToRadian(_endArc - 2 * _cornerAngle);
+              ? _degreeToRadian(_endArc + 2 * _cornerAngle!)
+              : _degreeToRadian(_endArc - 2 * _cornerAngle!);
         }
         break;
       case CornerStyle.bothFlat:
@@ -281,7 +279,7 @@ class RangePointer extends GaugePointer {
 
   /// Calculates the range sweep angle
   double _getSweepAngle() {
-    return _radianToDegree(_sweepCornerRadian) / _axis._sweepAngle;
+    return _radianToDegree(_sweepCornerRadian!) / _axis._sweepAngle!;
   }
 
   /// Method to draw the range pointer

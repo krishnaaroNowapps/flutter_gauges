@@ -10,28 +10,28 @@ class _AxisContainer extends StatelessWidget {
   SfRadialGauge gauge;
 
   ///list of widgets present in gauge
-  List<Widget> _gaugeWidgets;
+  late List<Widget> _gaugeWidgets;
 
   /// Specifies the render box
-  RenderBox _renderBox;
+  RenderBox? _renderBox;
 
   /// Specifies the axis tap position
-  Offset tapPosition;
+  late Offset tapPosition;
 
   /// Specifies the axis line interval for animation
-  List<double> _axisLineInterval;
+  late List<double?> _axisLineInterval;
 
   /// Specifies the axis element interval for load time animation
-  List<double> _axisElementsInterval;
+  late List<double?> _axisElementsInterval;
 
   /// Specifies the range interval for initial animation
-  List<double> _rangesInterval;
+  late List<double?> _rangesInterval;
 
   /// Specifies the pointer interval for load time animation
-  List<double> _pointersInterval;
+  List<double?>? _pointersInterval;
 
   /// Specifies the annotation interval for load time animation
-  List<double> _annotationInterval;
+  List<double?>? _annotationInterval;
 
   /// Specifies whether the axis line is enabled
   bool _hasAxisLine = false;
@@ -50,15 +50,15 @@ class _AxisContainer extends StatelessWidget {
 
   /// Method to update the pointer value
   void _updatePointerValue(BuildContext context, DragUpdateDetails details) {
-    _renderBox = _renderBox ?? context.findRenderObject();
+    _renderBox = _renderBox ?? context.findRenderObject() as RenderBox?;
     if (details != null && details.globalPosition != null) {
-      tapPosition = _renderBox.globalToLocal(details.globalPosition);
+      tapPosition = _renderBox!.globalToLocal(details.globalPosition);
       for (num i = 0; i < gauge.axes.length; i++) {
-        if (gauge.axes[i].pointers != null &&
-            gauge.axes[i].pointers.isNotEmpty) {
-          for (num j = 0; j < gauge.axes[i].pointers.length; j++) {
-            final GaugePointer _pointer = gauge.axes[i].pointers[j];
-            if (_pointer.enableDragging && _pointer._isDragStarted) {
+        if (gauge.axes[i as int].pointers != null &&
+            gauge.axes[i].pointers!.isNotEmpty) {
+          for (num j = 0; j < gauge.axes[i].pointers!.length; j++) {
+            final GaugePointer _pointer = gauge.axes[i].pointers![j as int];
+            if (_pointer.enableDragging && _pointer._isDragStarted!) {
               final Rect _rect = Rect.fromLTRB(
                   _pointer._axis._axisRect.left +
                       _pointer._axis._axisSize.width / 2 -
@@ -131,13 +131,13 @@ class _AxisContainer extends StatelessWidget {
 
   /// Method to check whether the axis is tapped
   void _checkIsAxisTapped(BuildContext context, TapUpDetails details) {
-    _renderBox = _renderBox ?? context.findRenderObject();
+    _renderBox = _renderBox ?? context.findRenderObject() as RenderBox?;
     if (details != null && details.globalPosition != null) {
       if (gauge.axes.isNotEmpty) {
         for (num i = 0; i < gauge.axes.length; i++) {
-          final RadialAxis _axis = gauge.axes[i];
+          final RadialAxis _axis = gauge.axes[i as int];
           final Offset _offset =
-              _renderBox.globalToLocal(details.globalPosition);
+              _renderBox!.globalToLocal(details.globalPosition);
           if (_axis.onAxisTapped != null &&
               _axis._axisPath.getBounds().contains(_offset)) {
             _axis._getAngleFromOffset(_offset);
@@ -149,14 +149,14 @@ class _AxisContainer extends StatelessWidget {
 
   /// Method to check whether the axis pointer is dragging
   void _checkPointerDragging(BuildContext context, DragStartDetails details) {
-    _renderBox = _renderBox ?? context.findRenderObject();
+    _renderBox = _renderBox ?? context.findRenderObject() as RenderBox?;
     if (details != null && details.globalPosition != null) {
-      tapPosition = _renderBox.globalToLocal(details.globalPosition);
+      tapPosition = _renderBox!.globalToLocal(details.globalPosition);
       for (num i = 0; i < gauge.axes.length; i++) {
-        if (gauge.axes[i].pointers != null &&
-            gauge.axes[i].pointers.isNotEmpty) {
-          for (num j = 0; j < gauge.axes[i].pointers.length; j++) {
-            final GaugePointer _pointer = gauge.axes[i].pointers[j];
+        if (gauge.axes[i as int].pointers != null &&
+            gauge.axes[i].pointers!.isNotEmpty) {
+          for (num j = 0; j < gauge.axes[i].pointers!.length; j++) {
+            final GaugePointer _pointer = gauge.axes[i].pointers![j as int];
             if (_pointer.enableDragging) {
               if (_pointer is RangePointer) {
                 final RangePointer _rangePointer = _pointer;
@@ -205,12 +205,12 @@ class _AxisContainer extends StatelessWidget {
   void _checkPointerIsDragged() {
     if (gauge.axes != null) {
       for (num i = 0; i < gauge.axes.length; i++) {
-        if (gauge.axes[i].pointers != null &&
-            gauge.axes[i].pointers.isNotEmpty) {
-          for (num j = 0; j < gauge.axes[i].pointers.length; j++) {
-            final GaugePointer _pointer = gauge.axes[i].pointers[j];
+        if (gauge.axes[i as int].pointers != null &&
+            gauge.axes[i].pointers!.isNotEmpty) {
+          for (num j = 0; j < gauge.axes[i].pointers!.length; j++) {
+            final GaugePointer _pointer = gauge.axes[i].pointers![j as int];
             if (_pointer.enableDragging) {
-              if (_pointer._isDragStarted) {
+              if (_pointer._isDragStarted!) {
                 _pointer._createPointerValueChangeEndArgs();
 
                 if (_pointer is NeedlePointer) {
@@ -222,7 +222,7 @@ class _AxisContainer extends StatelessWidget {
                   _markerPointer._animationEndValue =
                       _markerPointer._getSweepAngle();
                 } else {
-                  final RangePointer _rangePointer = _pointer;
+                  final RangePointer _rangePointer = _pointer as RangePointer;
                   _rangePointer._animationEndValue =
                       _rangePointer._getSweepAngle();
                 }
@@ -255,26 +255,26 @@ class _AxisContainer extends StatelessWidget {
         final RadialAxis _axis = gauge.axes[i];
         _addAxis(_axis, constraints);
 
-        if (_axis.ranges != null && _axis.ranges.isNotEmpty) {
+        if (_axis.ranges != null && _axis.ranges!.isNotEmpty) {
           _addRange(_axis, constraints);
         }
 
-        if (_axis.pointers != null && _axis.pointers.isNotEmpty) {
-          for (num j = 0; j < _axis.pointers.length; j++) {
-            if (_axis.pointers[j] is NeedlePointer) {
-              final NeedlePointer _needlePointer = _axis.pointers[j];
+        if (_axis.pointers != null && _axis.pointers!.isNotEmpty) {
+          for (num j = 0; j < _axis.pointers!.length; j++) {
+            if (_axis.pointers![j as int] is NeedlePointer) {
+              final NeedlePointer _needlePointer = _axis.pointers![j] as NeedlePointer;
               _addNeedlePointer(_axis, constraints, _needlePointer);
-            } else if (_axis.pointers[j] is MarkerPointer) {
-              final MarkerPointer _markerPointer = _axis.pointers[j];
+            } else if (_axis.pointers![j] is MarkerPointer) {
+              final MarkerPointer _markerPointer = _axis.pointers![j] as MarkerPointer;
               _addMarkerPointer(_axis, constraints, _markerPointer);
-            } else if (_axis.pointers[j] is RangePointer) {
-              final RangePointer _rangePointer = _axis.pointers[j];
+            } else if (_axis.pointers![j] is RangePointer) {
+              final RangePointer _rangePointer = _axis.pointers![j] as RangePointer;
               _addRangePointer(_axis, constraints, _rangePointer);
             }
           }
         }
 
-        if (_axis.annotations != null && _axis.annotations.isNotEmpty) {
+        if (_axis.annotations != null && _axis.annotations!.isNotEmpty) {
           _addAnnotation(_axis);
         }
       }
@@ -283,26 +283,26 @@ class _AxisContainer extends StatelessWidget {
 
   /// Adds the axis
   void _addAxis(RadialAxis axis, BoxConstraints constraints) {
-    Animation<double> _axisAnimation;
-    Animation<double> _axisElementAnimation;
+    Animation<double>? _axisAnimation;
+    Animation<double>? _axisElementAnimation;
     if (gauge._needsToAnimateAxes && (_hasAxisLine || _hasAxisElements)) {
-      gauge._radialGaugeState.animationController.duration =
+      gauge._radialGaugeState.animationController!.duration =
           Duration(milliseconds: gauge.animationDuration.toInt());
 
       if (_hasAxisLine) {
         _axisAnimation = Tween<double>(begin: 0, end: 1).animate(
             CurvedAnimation(
-                parent: gauge._radialGaugeState.animationController,
-                curve: Interval(_axisLineInterval[0], _axisLineInterval[1],
+                parent: gauge._radialGaugeState.animationController!,
+                curve: Interval(_axisLineInterval[0]!, _axisLineInterval[1]!,
                     curve: Curves.easeIn)));
       }
 
       if (_hasAxisElements) {
         _axisElementAnimation = Tween<double>(begin: 0, end: 1).animate(
             CurvedAnimation(
-                parent: gauge._radialGaugeState.animationController,
+                parent: gauge._radialGaugeState.animationController!,
                 curve: Interval(
-                    _axisElementsInterval[0], _axisElementsInterval[1],
+                    _axisElementsInterval[0]!, _axisElementsInterval[1]!,
                     curve: Curves.easeIn)));
       }
     }
@@ -322,7 +322,7 @@ class _AxisContainer extends StatelessWidget {
     ));
 
     if (_axisAnimation != null || _axisElementAnimation != null) {
-      gauge._radialGaugeState.animationController.forward(from: 0.0);
+      gauge._radialGaugeState.animationController!.forward(from: 0.0);
     }
   }
 
@@ -330,23 +330,23 @@ class _AxisContainer extends StatelessWidget {
   void _addRangePointer(
       RadialAxis axis, BoxConstraints constraints, RangePointer _rangePointer) {
     _rangePointer._animationEndValue = _rangePointer._getSweepAngle();
-    Animation<double> _pointerAnimation;
-    final List<double> _intervals = _getPointerAnimationInterval();
+    Animation<double>? _pointerAnimation;
+    final List<double?>? _intervals = _getPointerAnimationInterval();
     if (gauge._needsToAnimatePointers ||
         (_rangePointer.enableAnimation &&
             _rangePointer.animationDuration > 0 &&
-            _rangePointer._needsAnimate)) {
-      gauge._radialGaugeState.animationController.duration = Duration(
+            _rangePointer._needsAnimate!)) {
+      gauge._radialGaugeState.animationController!.duration = Duration(
           milliseconds:
               _getPointerAnimationDuration(_rangePointer.animationDuration));
       final Curve _animationType =
           _getCurveAnimation(_rangePointer.animationType);
-      final double _endValue = _rangePointer._animationEndValue;
+      final double? _endValue = _rangePointer._animationEndValue;
       _pointerAnimation = Tween<double>(
               begin: _rangePointer._animationStartValue ?? 0, end: _endValue)
           .animate(CurvedAnimation(
-              parent: gauge._radialGaugeState.animationController,
-              curve: Interval(_intervals[0], _intervals[1],
+              parent: gauge._radialGaugeState.animationController!,
+              curve: Interval(_intervals![0]!, _intervals[1]!,
                   curve: _animationType)));
     }
 
@@ -365,21 +365,21 @@ class _AxisContainer extends StatelessWidget {
     ));
     if (gauge._needsToAnimatePointers ||
         _rangePointer._isPointerAnimationEnabled()) {
-      gauge._radialGaugeState.animationController.forward(from: 0.0);
+      gauge._radialGaugeState.animationController!.forward(from: 0.0);
     }
   }
 
   /// Adds the needle pointer
   void _addNeedlePointer(RadialAxis axis, BoxConstraints constraints,
       NeedlePointer _needlePointer) {
-    Animation<double> _pointerAnimation;
-    final List<double> _intervals = _getPointerAnimationInterval();
+    Animation<double>? _pointerAnimation;
+    final List<double?>? _intervals = _getPointerAnimationInterval();
     _needlePointer._animationEndValue = _needlePointer._getSweepAngle();
     if (gauge._needsToAnimatePointers ||
         (_needlePointer.enableAnimation &&
             _needlePointer.animationDuration > 0 &&
-            _needlePointer._needsAnimate)) {
-      gauge._radialGaugeState.animationController.duration = Duration(
+            _needlePointer._needsAnimate!)) {
+      gauge._radialGaugeState.animationController!.duration = Duration(
           milliseconds:
               _getPointerAnimationDuration(_needlePointer.animationDuration));
 
@@ -390,8 +390,8 @@ class _AxisContainer extends StatelessWidget {
       _pointerAnimation = Tween<double>(
               begin: _actualValue, end: _needlePointer._animationEndValue)
           .animate(CurvedAnimation(
-              parent: gauge._radialGaugeState.animationController,
-              curve: Interval(_intervals[0], _intervals[1],
+              parent: gauge._radialGaugeState.animationController!,
+              curve: Interval(_intervals![0]!, _intervals[1]!,
                   curve: _getCurveAnimation(_needlePointer.animationType))));
     }
 
@@ -411,21 +411,21 @@ class _AxisContainer extends StatelessWidget {
 
     if (gauge._needsToAnimatePointers ||
         _needlePointer._isPointerAnimationEnabled()) {
-      gauge._radialGaugeState.animationController.forward(from: 0.0);
+      gauge._radialGaugeState.animationController!.forward(from: 0.0);
     }
   }
 
   /// Adds the marker pointer
   void _addMarkerPointer(RadialAxis axis, BoxConstraints constraints,
       MarkerPointer _markerPointer) {
-    Animation<double> _pointerAnimation;
-    final List<double> _intervals = _getPointerAnimationInterval();
+    Animation<double>? _pointerAnimation;
+    final List<double?>? _intervals = _getPointerAnimationInterval();
     _markerPointer._animationEndValue = _markerPointer._getSweepAngle();
     if (gauge._needsToAnimatePointers ||
         (_markerPointer.enableAnimation &&
             _markerPointer.animationDuration > 0 &&
-            _markerPointer._needsAnimate)) {
-      gauge._radialGaugeState.animationController.duration = Duration(
+            _markerPointer._needsAnimate!)) {
+      gauge._radialGaugeState.animationController!.duration = Duration(
           milliseconds:
               _getPointerAnimationDuration(_markerPointer.animationDuration));
 
@@ -434,8 +434,8 @@ class _AxisContainer extends StatelessWidget {
               begin: _markerPointer._animationStartValue ?? _startValue,
               end: _markerPointer._animationEndValue)
           .animate(CurvedAnimation(
-              parent: gauge._radialGaugeState.animationController,
-              curve: Interval(_intervals[0], _intervals[1],
+              parent: gauge._radialGaugeState.animationController!,
+              curve: Interval(_intervals![0]!, _intervals[1]!,
                   curve: _getCurveAnimation(_markerPointer.animationType))));
     }
 
@@ -455,21 +455,21 @@ class _AxisContainer extends StatelessWidget {
 
     if (gauge._needsToAnimatePointers ||
         _markerPointer._isPointerAnimationEnabled()) {
-      gauge._radialGaugeState.animationController.forward(from: 0.0);
+      gauge._radialGaugeState.animationController!.forward(from: 0.0);
     }
   }
 
   /// Adds the axis range
   void _addRange(RadialAxis axis, BoxConstraints constraints) {
-    for (num k = 0; k < axis.ranges.length; k++) {
-      Animation<double> _rangeAnimation;
+    for (num k = 0; k < axis.ranges!.length; k++) {
+      Animation<double>? _rangeAnimation;
       if (gauge._needsToAnimateRanges) {
-        gauge._radialGaugeState.animationController.duration =
+        gauge._radialGaugeState.animationController!.duration =
             Duration(milliseconds: gauge.animationDuration.toInt());
         _rangeAnimation = Tween<double>(begin: 0, end: 1).animate(
             CurvedAnimation(
-                parent: gauge._radialGaugeState.animationController,
-                curve: Interval(_rangesInterval[0], _rangesInterval[1],
+                parent: gauge._radialGaugeState.animationController!,
+                curve: Interval(_rangesInterval[0]!, _rangesInterval[1]!,
                     curve: Curves.easeIn)));
       }
 
@@ -479,8 +479,8 @@ class _AxisContainer extends StatelessWidget {
               painter: _RangePainter(
                   gauge,
                   axis,
-                  axis.ranges[k],
-                  axis.ranges[k]._needsRepaintRange ?? true,
+                  axis.ranges![k as int],
+                  axis.ranges![k]._needsRepaintRange ?? true,
                   _rangeAnimation,
                   gauge._radialGaugeState.rangeRepaintNotifier),
               size: Size(constraints.maxWidth, constraints.maxHeight)),
@@ -488,7 +488,7 @@ class _AxisContainer extends StatelessWidget {
       ));
 
       if (_rangeAnimation != null) {
-        gauge._radialGaugeState.animationController.forward(from: 0.0);
+        gauge._radialGaugeState.animationController!.forward(from: 0.0);
       }
     }
   }
@@ -503,8 +503,8 @@ class _AxisContainer extends StatelessWidget {
   }
 
   /// Returns the animation interval of pointers
-  List<double> _getPointerAnimationInterval() {
-    List<double> _intervals = List<double>(2);
+  List<double?>? _getPointerAnimationInterval() {
+    List<double?>? _intervals = List<double?>.filled(2, 0, growable: false);
     if (gauge._needsToAnimatePointers) {
       _intervals = _pointersInterval;
     } else {
@@ -517,8 +517,8 @@ class _AxisContainer extends StatelessWidget {
 
   /// Adds the axis annotation
   void _addAnnotation(RadialAxis axis) {
-    for (num j = 0; j < axis.annotations.length; j++) {
-      final GaugeAnnotation _annotation = axis.annotations[j];
+    for (num j = 0; j < axis.annotations!.length; j++) {
+      final GaugeAnnotation _annotation = axis.annotations![j as int];
       _gaugeWidgets.add(_AnnotationRenderer(
           key: GlobalKey(),
           annotation: _annotation,
@@ -536,7 +536,7 @@ class _AxisContainer extends StatelessWidget {
     double _startValue = 0.05;
     double _endValue = 0;
     for (num i = 0; i < gauge.axes.length; i++) {
-      _calculateAxisElements(gauge.axes[i]);
+      _calculateAxisElements(gauge.axes[i as int]);
     }
 
     _totalCount = _getElementsCount(_totalCount);
@@ -544,7 +544,7 @@ class _AxisContainer extends StatelessWidget {
     _interval = 1 / _totalCount;
     _endValue = _interval;
     if (_hasAxisLine) {
-      _axisLineInterval = List<double>(2);
+      _axisLineInterval = List<double?>.filled(2, 0, growable: false);
       _axisLineInterval[0] = _startValue;
       _axisLineInterval[1] = _endValue;
       _startValue = _endValue;
@@ -552,7 +552,7 @@ class _AxisContainer extends StatelessWidget {
     }
 
     if (_hasAxisElements) {
-      _axisElementsInterval = List<double>(2);
+      _axisElementsInterval = List<double?>.filled(2, 0, growable: false);
       _axisElementsInterval[0] = _startValue;
       _axisElementsInterval[1] = _endValue;
       _startValue = _endValue;
@@ -560,7 +560,7 @@ class _AxisContainer extends StatelessWidget {
     }
 
     if (_hasRanges) {
-      _rangesInterval = List<double>(2);
+      _rangesInterval = List<double?>.filled(2, 0, growable: false);
       _rangesInterval[0] = _startValue;
       _rangesInterval[1] = _endValue;
       _startValue = _endValue;
@@ -568,17 +568,17 @@ class _AxisContainer extends StatelessWidget {
     }
 
     if (_hasPointers) {
-      _pointersInterval = List<double>(2);
-      _pointersInterval[0] = _startValue;
-      _pointersInterval[1] = _endValue;
+      _pointersInterval = List<double?>.filled(2, 0, growable: false);
+      _pointersInterval![0] = _startValue;
+      _pointersInterval![1] = _endValue;
       _startValue = _endValue;
       _endValue += _interval;
     }
 
     if (_hasAnnotations) {
-      _annotationInterval = List<double>(2);
-      _annotationInterval[0] = _startValue;
-      _annotationInterval[1] = _endValue;
+      _annotationInterval = List<double?>.filled(2, 0, growable: false);
+      _annotationInterval![0] = _startValue;
+      _annotationInterval![1] = _endValue;
     }
   }
 
@@ -617,16 +617,16 @@ class _AxisContainer extends StatelessWidget {
       _hasAxisElements = true;
     }
 
-    if (_axis.ranges != null && _axis.ranges.isNotEmpty && !_hasRanges) {
+    if (_axis.ranges != null && _axis.ranges!.isNotEmpty && !_hasRanges) {
       _hasRanges = true;
     }
 
-    if (_axis.pointers != null && _axis.pointers.isNotEmpty && !_hasPointers) {
+    if (_axis.pointers != null && _axis.pointers!.isNotEmpty && !_hasPointers) {
       _hasPointers = true;
     }
 
     if (_axis.annotations != null &&
-        _axis.annotations.isNotEmpty &&
+        _axis.annotations!.isNotEmpty &&
         !_hasAnnotations) {
       _hasAnnotations = true;
     }

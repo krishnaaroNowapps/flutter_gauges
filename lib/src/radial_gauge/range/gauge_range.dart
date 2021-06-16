@@ -16,16 +16,16 @@ part of gauges;
 class GaugeRange {
   /// Creates the gauge range
   GaugeRange(
-      {@required this.startValue,
-      @required this.endValue,
-      double startWidth,
-      double endWidth,
+      {required this.startValue,
+      required this.endValue,
+      double? startWidth,
+      double? endWidth,
       this.sizeUnit = GaugeSizeUnit.logicalPixel,
       this.color,
       this.gradient,
       this.rangeOffset = 0,
       this.label,
-      GaugeTextStyle labelStyle})
+      GaugeTextStyle? labelStyle})
       : startWidth =
             startWidth == null ? label != null ? startWidth : 10 : startWidth,
         endWidth = endWidth == null ? label != null ? endWidth : 10 : endWidth,
@@ -35,8 +35,6 @@ class GaugeRange {
                 fontFamily: 'Segoe UI',
                 fontStyle: FontStyle.normal,
                 fontWeight: FontWeight.normal),
-        assert(startValue != null),
-        assert(endValue != null),
         assert((gradient != null && gradient is SweepGradient) ||
             gradient == null) {
     _needsRepaintRange = true;
@@ -88,7 +86,7 @@ class GaugeRange {
   ///        ));
   ///}
   /// ```
-  final double startWidth;
+  final double? startWidth;
 
   /// Specifies the range end width either in logical pixel or radius factor.
   ///
@@ -104,7 +102,7 @@ class GaugeRange {
   ///        ));
   ///}
   /// ```
-  final double endWidth;
+  final double? endWidth;
 
   /// Calculates the range position and size either in logical pixel or radius factor.
   ///
@@ -153,7 +151,7 @@ class GaugeRange {
   ///        ));
   ///}
   /// ```
-  final Color color;
+  final Color? color;
 
   /// Customizes the label for range.
   ///
@@ -187,7 +185,7 @@ class GaugeRange {
   ///        ));
   ///}
   /// ```
-  final String label;
+  final String? label;
 
   /// Specifies the gradient for range
   ///
@@ -208,97 +206,97 @@ class GaugeRange {
   ///        ));
   ///}
   /// ```
-  final Gradient gradient;
+  final Gradient? gradient;
 
   /// Specifies whether to repaint the range
-  bool _needsRepaintRange;
+  bool? _needsRepaintRange;
 
   /// Specifies the range axis
-  RadialAxis _axis;
+  late RadialAxis _axis;
 
   /// Specifies the start width
-  double _actualStartWidth;
+  double? _actualStartWidth;
 
   /// Specifies the actual end width
-  double _actualEndWidth;
+  double? _actualEndWidth;
 
   /// Specifies the outer start offset
-  double _outerStartOffset;
+  double? _outerStartOffset;
 
   /// Specifies the outer end offset
-  double _outerEndOffset;
+  double? _outerEndOffset;
 
   /// Specifies the inner start offset
-  double _innerStartOffset;
+  double? _innerStartOffset;
 
   /// Specifies the inner end offset
-  double _innerEndOffset;
+  double? _innerEndOffset;
 
   /// Specifies the outer arc
-  _ArcData _outerArc;
+  late _ArcData _outerArc;
 
   /// Specifies the inner arc
-  _ArcData _innerArc;
+  late _ArcData _innerArc;
 
   /// Specifies the outer arc sweep angle
-  double _outerArcSweepAngle;
+  late double _outerArcSweepAngle;
 
   /// Specifies the inner arc sweep angle
-  double _innerArcSweepAngle;
+  late double _innerArcSweepAngle;
 
   /// Specifies the thickness value
-  double _thickness;
+  double? _thickness;
 
   /// Specifies the range rect
-  Rect _rangeRect;
+  Rect? _rangeRect;
 
   /// Specifies the range start radian
-  double _rangeStartRadian;
+  late double _rangeStartRadian;
 
   /// Specifies the range end radian
-  double _rangeEndRadian;
+  late double _rangeEndRadian;
 
   /// Specifies the range mid radian
-  double _rangeMidRadian;
+  late double _rangeMidRadian;
 
   /// Specifies the center value
-  Offset _center;
+  late Offset _center;
 
   /// Specifies the maximum angle
-  double _maxAngle;
+  double? _maxAngle;
 
   /// Specifies the range start value
-  double _rangeStartValue;
+  late double _rangeStartValue;
 
   /// Specifies the range ed value
-  double _rangeEndValue;
+  late double _rangeEndValue;
 
   /// Specifies the range mid value
-  double _rangeMidValue;
+  late double _rangeMidValue;
 
   /// Specifies the label angle
-  double _labelAngle;
+  late double _labelAngle;
 
   /// Holds the label position
-  Offset _labelPosition;
+  late Offset _labelPosition;
 
   /// Holds the label size
-  Size _labelSize;
+  late Size _labelSize;
 
   /// Holds the actual start value
-  double _actualStartValue;
+  double? _actualStartValue;
 
   /// Holds the actual end value
-  double _actualEndValue;
+  double? _actualEndValue;
 
   /// Holds the total offset
-  double _totalOffset;
+  late double _totalOffset;
 
   /// Specifies the actual range offset
-  double _actualRangeOffset;
+  late double _actualRangeOffset;
 
   /// Specifies the path rect
-  Rect _pathRect;
+  Rect? _pathRect;
 
   /// Calculates the range position
   void _calculateRangePosition() {
@@ -308,12 +306,12 @@ class GaugeRange {
     _center = Offset(_axis._axisSize.width / 2, _axis._axisSize.height / 2);
     _totalOffset = _actualRangeOffset < 0
         ? _axis._calculateAxisOffset() + _actualRangeOffset
-        : (_actualRangeOffset + _axis._axisOffset);
+        : (_actualRangeOffset + _axis._axisOffset!);
     _maxAngle = _axis._sweepAngle;
     _actualStartValue =
-        _minMax(startValue ?? _axis.minimum, _axis.minimum, _axis.maximum);
+        _minMax(startValue, _axis.minimum, _axis.maximum);
     _actualEndValue =
-        _minMax(endValue ?? _axis.maximum, _axis.minimum, _axis.maximum);
+        _minMax(endValue, _axis.minimum, _axis.maximum);
     _calculateRangeAngle();
     if (_actualStartWidth != _actualEndWidth) {
       _calculateInEqualWidthArc();
@@ -334,8 +332,8 @@ class GaugeRange {
     _innerStartOffset = _actualStartWidth;
     _innerEndOffset = _actualEndWidth;
 
-    _outerArc = _radiusToAngleConversion(_outerStartOffset, _outerEndOffset);
-    _innerArc = _radiusToAngleConversion(_innerStartOffset, _innerEndOffset);
+    _outerArc = _radiusToAngleConversion(_outerStartOffset!, _outerEndOffset!);
+    _innerArc = _radiusToAngleConversion(_innerStartOffset!, _innerEndOffset!);
 
     _outerArcSweepAngle =
         _getSweepAngle(_outerArc._endAngle - _outerArc._startAngle);
@@ -362,35 +360,35 @@ class GaugeRange {
   void _calculateRangeAngle() {
     if (!_axis.isInversed) {
       _rangeStartValue = _axis.startAngle +
-          (_maxAngle /
+          (_maxAngle! /
               ((_axis.maximum - _axis.minimum) /
-                  (_actualStartValue - _axis.minimum)));
+                  (_actualStartValue! - _axis.minimum)));
       _rangeEndValue = _axis.startAngle +
-          (_maxAngle /
+          (_maxAngle! /
               ((_axis.maximum - _axis.minimum) /
-                  (_actualEndValue - _axis.minimum)));
+                  (_actualEndValue! - _axis.minimum)));
       _rangeMidValue = _axis.startAngle +
-          (_maxAngle /
+          (_maxAngle! /
               ((_axis.maximum - _axis.minimum) /
-                  ((_actualEndValue - _actualStartValue) / 2 +
-                      _actualStartValue)));
+                  ((_actualEndValue! - _actualStartValue!) / 2 +
+                      _actualStartValue!)));
     } else {
       _rangeStartValue = _axis.startAngle +
-          _maxAngle -
-          (_maxAngle /
+          _maxAngle! -
+          (_maxAngle! /
               ((_axis.maximum - _axis.minimum) /
-                  (_actualStartValue - _axis.minimum)));
+                  (_actualStartValue! - _axis.minimum)));
       _rangeEndValue = _axis.startAngle +
-          _maxAngle -
-          (_maxAngle /
+          _maxAngle! -
+          (_maxAngle! /
               ((_axis.maximum - _axis.minimum) /
-                  (_actualEndValue - _axis.minimum)));
+                  (_actualEndValue! - _axis.minimum)));
       _rangeMidValue = _axis.startAngle +
-          _maxAngle -
-          (_maxAngle /
+          _maxAngle! -
+          (_maxAngle! /
               ((_axis.maximum - _axis.minimum) /
-                  ((_actualEndValue - _actualStartValue) / 2 +
-                      _actualStartValue)));
+                  ((_actualEndValue! - _actualStartValue!) / 2 +
+                      _actualStartValue!)));
     }
 
     _rangeStartRadian = _degreeToRadian(_rangeStartValue);
@@ -402,18 +400,18 @@ class GaugeRange {
   void _calculateEqualWidthArc() {
     _thickness = _actualStartWidth;
     _rangeStartRadian = _degreeToRadian(
-        (_axis.valueToFactor(_actualStartValue) * _axis._sweepAngle) +
+        (_axis.valueToFactor(_actualStartValue!) * _axis._sweepAngle!) +
             _axis.startAngle);
     final double _endRadian = _degreeToRadian(
-        (_axis.valueToFactor(_actualEndValue) * _axis._sweepAngle) +
+        (_axis.valueToFactor(_actualEndValue!) * _axis._sweepAngle!) +
             _axis.startAngle);
     _rangeEndRadian = _endRadian - _rangeStartRadian;
 
     _rangeRect = Rect.fromLTRB(
-        -(_axis._radius - (_actualStartWidth / 2 + _totalOffset)),
-        -(_axis._radius - (_actualStartWidth / 2 + _totalOffset)),
-        _axis._radius - (_actualStartWidth / 2 + _totalOffset),
-        _axis._radius - (_actualStartWidth / 2 + _totalOffset));
+        -(_axis._radius - (_actualStartWidth! / 2 + _totalOffset)),
+        -(_axis._radius - (_actualStartWidth! / 2 + _totalOffset)),
+        _axis._radius - (_actualStartWidth! / 2 + _totalOffset),
+        _axis._radius - (_actualStartWidth! / 2 + _totalOffset));
   }
 
   /// Method to calculate the sweep angle
@@ -479,7 +477,7 @@ class GaugeRange {
       _actualEndAngle += 360;
     }
 
-    if (_actualStartValue > _actualEndValue) {
+    if (_actualStartValue! > _actualEndValue!) {
       final double _temp = _actualEndAngle;
       _actualEndAngle = _actualStartAngle;
       _actualStartAngle = _temp;
@@ -529,7 +527,7 @@ class GaugeRange {
   }
 
   /// Calculates the actual value
-  double _calculateActualValue(double _value) {
+  double _calculateActualValue(double? _value) {
     double _actualValue = 0;
     if (_value != null) {
       switch (sizeUnit) {
@@ -554,14 +552,14 @@ class GaugeRange {
   /// Calculates the label position
   void _calculateLabelPosition() {
     final double _midAngle =
-        (_axis.valueToFactor((_actualEndValue + _actualStartValue) / 2) *
-                _axis._sweepAngle) +
+        (_axis.valueToFactor((_actualEndValue! + _actualStartValue!) / 2) *
+                _axis._sweepAngle!) +
             _axis.startAngle;
     final double _labelRadian = _degreeToRadian(_midAngle);
     _labelAngle = _midAngle - 90;
     final double _height = _actualStartWidth != _actualEndWidth
-        ? (_actualEndWidth - _actualStartWidth).abs() / 2
-        : _actualEndWidth / 2;
+        ? (_actualEndWidth! - _actualStartWidth!).abs() / 2
+        : _actualEndWidth! / 2;
     final double _x = _axis._axisSize.width / 2 +
         ((_axis._radius - (_totalOffset + _height)) * math.cos(_labelRadian)) -
         _axis._centerX;

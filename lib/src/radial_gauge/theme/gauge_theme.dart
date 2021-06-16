@@ -6,55 +6,55 @@ class GaugeTheme {
   GaugeTheme();
 
   /// Specifies the title color
-  Color titleColor;
+  Color? titleColor;
 
   /// Specifies the axis label color
-  Color axisLabelColor;
+  Color? axisLabelColor;
 
   /// Specifies the axis line color
-  Color axisLineColor;
+  Color? axisLineColor;
 
   /// Specifies the major tick line color
-  Color majorTickColor;
+  Color? majorTickColor;
 
   /// Specifies the minor tick line color
-  Color minorTickColor;
+  Color? minorTickColor;
 
   /// Specifies the marker color
-  Color markerColor;
+  Color? markerColor;
 
   /// Specifies the marker border color
-  Color markerBorderColor;
+  Color? markerBorderColor;
 
   /// Specifies the needle color
-  Color needleColor;
+  Color? needleColor;
 
   /// Specifies the knob color
-  Color knobColor;
+  Color? knobColor;
 
   /// Specifies the knob border color
-  Color knobBorderColor;
+  Color? knobBorderColor;
 
   /// Specifies the tail color
-  Color tailColor;
+  Color? tailColor;
 
   /// Specifies the tail border color
-  Color tailBorderColor;
+  Color? tailBorderColor;
 
   /// Specifies the range pointer color
-  Color rangePointerColor;
+  Color? rangePointerColor;
 
   /// Specifies the range color
-  Color rangeColor;
+  Color? rangeColor;
 
   /// Specifies the title border color
-  Color titleBorderColor;
+  Color? titleBorderColor;
 
   /// Specifies the title background color
-  Color titleBackgroundColor;
+  Color? titleBackgroundColor;
 
   /// Specifies the theme brightness
-  Brightness brightness;
+  Brightness? brightness;
 
   /// Initializes the gauge theme
   void initializeGaugeTheme(ThemeData theme) {

@@ -17,11 +17,11 @@ class MarkerPointer extends GaugePointer {
   /// Creates the marker pointer
   MarkerPointer(
       {double value = 0,
-      bool enableDragging,
-      ValueChanged<double> onValueChanged,
-      ValueChanged<double> onValueChangeStart,
-      ValueChanged<double> onValueChangeEnd,
-      ValueChanged<ValueChangingArgs> onValueChanging,
+      bool? enableDragging,
+      ValueChanged<double?>? onValueChanged,
+      ValueChanged<double?>? onValueChangeStart,
+      ValueChanged<double?>? onValueChangeEnd,
+      ValueChanged<ValueChangingArgs>? onValueChanging,
       this.markerType = MarkerType.invertedTriangle,
       this.color,
       this.markerWidth = 10,
@@ -32,9 +32,9 @@ class MarkerPointer extends GaugePointer {
       this.borderColor,
       this.offsetUnit = GaugeSizeUnit.logicalPixel,
       this.imageUrl,
-      AnimationType animationType,
-      GaugeTextStyle textStyle,
-      bool enableAnimation,
+      AnimationType? animationType,
+      GaugeTextStyle? textStyle,
+      bool? enableAnimation,
       double animationDuration = 1000})
       : textStyle = textStyle ??
             GaugeTextStyle(
@@ -93,7 +93,7 @@ class MarkerPointer extends GaugePointer {
   ///        ));
   ///}
   /// ```
-  final Color color;
+  final Color? color;
 
   /// Specifies the marker height in logical pixel.
   ///
@@ -145,7 +145,7 @@ class MarkerPointer extends GaugePointer {
   ///        ));
   ///}
   /// ```
-  final String imageUrl;
+  final String? imageUrl;
 
   /// Specifies the marker text.
   ///
@@ -163,7 +163,7 @@ class MarkerPointer extends GaugePointer {
   ///        ));
   ///}
   /// ```
-  final String text;
+  final String? text;
 
   /// Customizes the marker text.
   ///
@@ -235,7 +235,7 @@ class MarkerPointer extends GaugePointer {
   ///        ));
   ///}
   /// ```
-  final Color borderColor;
+  final Color? borderColor;
 
   /// Specifies the border width for marker.
   ///
@@ -255,25 +255,25 @@ class MarkerPointer extends GaugePointer {
   final double borderWidth;
 
   /// Specifies the marker image
-  dart_ui.Image _image;
+  dart_ui.Image? _image;
 
   /// Specifies the marker offset
-  Offset _offset;
+  Offset? _offset;
 
   /// Specifies the radian value of the marker
-  double _radian;
+  late double _radian;
 
   /// Specifies the angle value
-  double _angle;
+  double? _angle;
 
   /// Specifies the marker text size
-  Size _textSize;
+  late Size _textSize;
 
   /// Specifies the total offset considering axis element
-  double _totalOffset;
+  late double _totalOffset;
 
   /// Specifies actual marker offset value
-  double _actualMarkerOffset;
+  late double _actualMarkerOffset;
 
   /// Specifies the margin for calculating
   /// marker pointer rect
@@ -283,8 +283,8 @@ class MarkerPointer extends GaugePointer {
   @override
   void _calculatePosition() {
     _angle = _getPointerAngle();
-    _radian = _degreeToRadian(_angle);
-    final Offset _offset = _calculateMarkerOffset(_radian);
+    _radian = _degreeToRadian(_angle!);
+    final Offset _offset = _calculateMarkerOffset(_radian)!;
     if (markerType == MarkerType.image && imageUrl != null) {
       _loadImage();
     } else if (markerType == MarkerType.text && text != null) {
@@ -300,29 +300,29 @@ class MarkerPointer extends GaugePointer {
 
   /// Method returns the angle of  current pointer alue
   double _getPointerAngle() {
-    _currentValue = _minMax(_currentValue, _axis.minimum, _axis.maximum);
-    return (_axis.valueToFactor(_currentValue) * _axis._sweepAngle) +
+    _currentValue = _minMax(_currentValue!, _axis.minimum, _axis.maximum);
+    return (_axis.valueToFactor(_currentValue!) * _axis._sweepAngle!) +
         _axis.startAngle;
   }
 
   /// Method returns the sweep angle of pointer
   double _getSweepAngle() {
-    return _axis.valueToFactor(_currentValue);
+    return _axis.valueToFactor(_currentValue!);
   }
 
   /// Calculates the marker offset position
-  Offset _calculateMarkerOffset(double _markerRadian) {
+  Offset? _calculateMarkerOffset(double _markerRadian) {
     _actualMarkerOffset =
         _axis._calculateActualValue(markerOffset, offsetUnit, true);
     _totalOffset = _actualMarkerOffset < 0
         ? _axis._calculateAxisOffset() + _actualMarkerOffset
-        : (_actualMarkerOffset + _axis._axisOffset);
+        : (_actualMarkerOffset + _axis._axisOffset!);
     final double _x = (_axis._axisSize.width / 2) +
-        (_axis._radius - _totalOffset - (_axis._actualAxisWidth / 2)) *
+        (_axis._radius - _totalOffset - (_axis._actualAxisWidth! / 2)) *
             math.cos(_markerRadian) -
         _axis._centerX;
     final double _y = (_axis._axisSize.height / 2) +
-        (_axis._radius - _totalOffset - (_axis._actualAxisWidth / 2)) *
+        (_axis._radius - _totalOffset - (_axis._actualAxisWidth! / 2)) *
             math.sin(_markerRadian) -
         _axis._centerY;
     _offset = Offset(_x, _y);
@@ -333,13 +333,13 @@ class MarkerPointer extends GaugePointer {
 // ignore: avoid_void_async
   void _loadImage() async {
     await _renderImage();
-    _axis._gauge._radialGaugeState.pointerRepaintNotifier.value++;
+    _axis._gauge._radialGaugeState.pointerRepaintNotifier!.value++;
   }
 
   /// Renders the image from the image url
 // ignore: prefer_void_to_null
   Future<Null> _renderImage() async {
-    final ByteData _imageData = await rootBundle.load(imageUrl);
+    final ByteData _imageData = await rootBundle.load(imageUrl!);
     final dart_ui.Codec _imageCodec =
         await dart_ui.instantiateImageCodec(_imageData.buffer.asUint8List());
     final dart_ui.FrameInfo _frameInfo = await _imageCodec.getNextFrame();
@@ -347,16 +347,16 @@ class MarkerPointer extends GaugePointer {
   }
 
   @override
-  void drawPointer(Canvas canvas, double animationValue, Offset startPosition,
-      Offset endPosition, double pointerAngle) {
+  void drawPointer(Canvas canvas, double? animationValue, Offset? startPosition,
+      Offset? endPosition, double? pointerAngle) {
     final Paint paint = Paint()
-      ..color = color ?? _axis._gauge._gaugeTheme.markerColor
+      ..color = color ?? _axis._gauge._gaugeTheme.markerColor!
       ..style = PaintingStyle.fill;
 
-    Paint _borderPaint;
+    Paint? _borderPaint;
     if (borderWidth != null && borderWidth > 0) {
       _borderPaint = Paint()
-        ..color = borderColor ?? _axis._gauge._gaugeTheme.markerBorderColor
+        ..color = borderColor ?? _axis._gauge._gaugeTheme.markerBorderColor!
         ..strokeWidth = borderWidth
         ..style = PaintingStyle.stroke;
     }
@@ -364,25 +364,25 @@ class MarkerPointer extends GaugePointer {
     canvas.save();
     switch (markerType) {
       case MarkerType.circle:
-        _drawCircle(canvas, paint, startPosition, _borderPaint);
+        _drawCircle(canvas, paint, startPosition!, _borderPaint);
         break;
       case MarkerType.rectangle:
         _drawRectangle(
-            canvas, paint, startPosition, pointerAngle, _borderPaint);
+            canvas, paint, startPosition!, pointerAngle!, _borderPaint);
         break;
       case MarkerType.image:
-        _drawMarkerImage(canvas, paint, startPosition, pointerAngle);
+        _drawMarkerImage(canvas, paint, startPosition!, pointerAngle!);
         break;
       case MarkerType.triangle:
       case MarkerType.invertedTriangle:
-        _drawTriangle(canvas, paint, startPosition, pointerAngle, _borderPaint);
+        _drawTriangle(canvas, paint, startPosition!, pointerAngle, _borderPaint);
         break;
       case MarkerType.diamond:
-        _drawDiamond(canvas, paint, startPosition, pointerAngle, _borderPaint);
+        _drawDiamond(canvas, paint, startPosition!, pointerAngle!, _borderPaint);
         break;
       case MarkerType.text:
         if (text != null) {
-          _drawText(canvas, paint, startPosition, pointerAngle);
+          _drawText(canvas, paint, startPosition!, pointerAngle!);
         }
 
         break;
@@ -418,7 +418,7 @@ class MarkerPointer extends GaugePointer {
 
   /// Renders the MarkerShape.circel
   void _drawCircle(
-      Canvas canvas, Paint paint, Offset startPosition, Paint _borderPaint) {
+      Canvas canvas, Paint paint, Offset startPosition, Paint? _borderPaint) {
     final Rect _rect = Rect.fromLTRB(
         startPosition.dx - markerWidth / 2,
         startPosition.dy - markerHeight / 2,
@@ -432,7 +432,7 @@ class MarkerPointer extends GaugePointer {
 
   /// Renders the MarkerShape.rectangle
   void _drawRectangle(Canvas canvas, Paint paint, Offset startPosition,
-      double pointerAngle, Paint _borderPaint) {
+      double pointerAngle, Paint? _borderPaint) {
     canvas.translate(startPosition.dx, startPosition.dy);
     canvas.rotate(_degreeToRadian(pointerAngle));
     canvas.drawRect(
@@ -455,13 +455,13 @@ class MarkerPointer extends GaugePointer {
     final Rect _rect = Rect.fromLTRB(
         -markerWidth / 2, -markerHeight / 2, markerWidth / 2, markerHeight / 2);
     if (_image != null) {
-      canvas.drawImageNine(_image, _rect, _rect, paint);
+      canvas.drawImageNine(_image!, _rect, _rect, paint);
     }
   }
 
   /// Renders the MarkerShape.diamond
   void _drawDiamond(Canvas canvas, Paint paint, Offset startPosition,
-      double pointerAngle, Paint _borderPaint) {
+      double pointerAngle, Paint? _borderPaint) {
     canvas.translate(startPosition.dx, startPosition.dy);
     canvas.rotate(_degreeToRadian(pointerAngle - 90));
     final Path path = Path();
@@ -479,11 +479,11 @@ class MarkerPointer extends GaugePointer {
 
   /// Renders the triangle and the inverted triangle
   void _drawTriangle(Canvas canvas, Paint paint, Offset startPosition,
-      double pointerAngle, Paint _borderPaint) {
+      double? pointerAngle, Paint? _borderPaint) {
     canvas.translate(startPosition.dx, startPosition.dy);
     final double _triangleAngle = markerType == MarkerType.triangle
-        ? pointerAngle + 90
-        : pointerAngle - 90;
+        ? pointerAngle! + 90
+        : pointerAngle! - 90;
     canvas.rotate(_degreeToRadian(_triangleAngle));
 
     final Path path = Path();
