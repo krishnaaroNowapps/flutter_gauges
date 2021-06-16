@@ -22,37 +22,7 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c253d45e-8526-41c3-9b9b-bcce29eee9ac" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/runConfigurations.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.dart_tool/package_config.json" beforeDir="false" afterPath="$PROJECT_DIR$/.dart_tool/package_config.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/flutter_gauges.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/flutter_gauges.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Dart_SDK.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Dart_SDK.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.packages" beforeDir="false" afterPath="$PROJECT_DIR$/.packages" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/src/radial_gauge/annotation/gauge_annotation.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/radial_gauge/annotation/gauge_annotation.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/src/radial_gauge/axis/gauge_axis.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/radial_gauge/axis/gauge_axis.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/src/radial_gauge/axis/radial_axis.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/radial_gauge/axis/radial_axis.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/src/radial_gauge/common/common.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/radial_gauge/common/common.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/src/radial_gauge/common/gauge_annotation_renderer.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/radial_gauge/common/gauge_annotation_renderer.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/src/radial_gauge/common/radial_gauge_renderer.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/radial_gauge/common/radial_gauge_renderer.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/src/radial_gauge/gauge/radial_gauge.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/radial_gauge/gauge/radial_gauge.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/src/radial_gauge/gauge_painter/marker_pointer_painter.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/radial_gauge/gauge_painter/marker_pointer_painter.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/src/radial_gauge/gauge_painter/needle_pointer_painter.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/radial_gauge/gauge_painter/needle_pointer_painter.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/src/radial_gauge/gauge_painter/radial_axis_painter.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/radial_gauge/gauge_painter/radial_axis_painter.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/src/radial_gauge/gauge_painter/range_painter.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/radial_gauge/gauge_painter/range_painter.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/src/radial_gauge/gauge_painter/range_pointer_painter.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/radial_gauge/gauge_painter/range_pointer_painter.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/src/radial_gauge/pointers/gauge_pointer.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/radial_gauge/pointers/gauge_pointer.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/src/radial_gauge/pointers/marker_pointer.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/radial_gauge/pointers/marker_pointer.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/src/radial_gauge/pointers/needle_pointer.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/radial_gauge/pointers/needle_pointer.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/src/radial_gauge/pointers/range_pointer.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/radial_gauge/pointers/range_pointer.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/src/radial_gauge/range/gauge_range.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/radial_gauge/range/gauge_range.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/src/radial_gauge/theme/gauge_theme.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/radial_gauge/theme/gauge_theme.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/src/radial_gauge/utils/helper.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/radial_gauge/utils/helper.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pubspec.lock" beforeDir="false" afterPath="$PROJECT_DIR$/pubspec.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/pubspec.yaml" afterDir="false" />
-    </list>
+    <list default="true" id="c253d45e-8526-41c3-9b9b-bcce29eee9ac" name="Default Changelist" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
