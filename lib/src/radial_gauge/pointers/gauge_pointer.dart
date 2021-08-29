@@ -68,7 +68,7 @@ abstract class GaugePointer {
   ///        ));
   ///}
   /// ```
-  final ValueChanged<double> onValueChanged;
+  final ValueChanged<double?>? onValueChanged;
 
   /// Called when the user starts selecting a new value of pointer by dragging. .
   ///
@@ -87,7 +87,7 @@ abstract class GaugePointer {
   ///        ));
   ///}
   /// ```
-  final ValueChanged<double> onValueChangeStart;
+  final ValueChanged<double?>? onValueChangeStart;
 
   /// Called when the user is done selecting a new value of the pointer by dragging.
   ///
@@ -106,7 +106,7 @@ abstract class GaugePointer {
   ///        ));
   ///}
   /// ```
-  final ValueChanged<double> onValueChangeEnd;
+  final ValueChanged<double?>? onValueChangeEnd;
 
   /// Called before when the user is selecting a new value for the pointers by dragging.
   ///
@@ -127,7 +127,7 @@ abstract class GaugePointer {
   ///        ));
   ///}
   /// ```
-  final ValueChanged<ValueChangingArgs> onValueChanging;
+  final ValueChanged<ValueChangingArgs>? onValueChanging;
 
   /// Enables or disables the pointer animation.
   ///
@@ -181,28 +181,28 @@ abstract class GaugePointer {
   final AnimationType animationType;
 
   /// Specifies the axis for this pointer
-  RadialAxis _axis;
+  late RadialAxis _axis;
 
   /// Specifies whether to repaint the marker
-  bool _needsRepaintPointer;
+  bool? _needsRepaintPointer;
 
   /// Specifies the current value of the point
-  double _currentValue;
+  double? _currentValue;
 
   /// Specifies the pointer rect
-  Rect _pointerRect;
+  late Rect _pointerRect;
 
   /// Specifies the value whether the pointer is dragged
-  bool _isDragStarted;
+  bool? _isDragStarted;
 
   /// Holds the end value of pointer animation
-  double _animationEndValue;
+  double? _animationEndValue;
 
   /// Holds the animation start value;
-  double _animationStartValue;
+  double? _animationStartValue;
 
   /// Holds the value whether to animate the pointer
-  bool _needsAnimate;
+  bool? _needsAnimate;
 
   /// Method to calculates the pointer position
   void _calculatePosition();
@@ -217,7 +217,7 @@ abstract class GaugePointer {
     final double _centerY = _axis._axisSize.height * _axis.centerY;
     double _angle =
         math.atan2(_y - _centerY, _x - _centerX) * (180 / math.pi) + 360;
-    final double _endAngle = _axis.startAngle + _axis._sweepAngle;
+    final double _endAngle = _axis.startAngle + _axis._sweepAngle!;
     if (_angle < 360 && _angle > 180) {
       _angle += 360;
     }
@@ -231,11 +231,11 @@ abstract class GaugePointer {
       if (!_axis.isInversed) {
         _dragValue = _axis.minimum +
             (_angle - _axis.startAngle) *
-                ((_axis.maximum - _axis.minimum) / _axis._sweepAngle);
+                ((_axis.maximum - _axis.minimum) / _axis._sweepAngle!);
       } else {
         _dragValue = _axis.maximum -
             (_angle - _axis.startAngle) *
-                ((_axis.maximum - _axis.minimum) / _axis._sweepAngle);
+                ((_axis.maximum - _axis.minimum) / _axis._sweepAngle!);
       }
 
       if (this is RangePointer) {
@@ -252,9 +252,9 @@ abstract class GaugePointer {
           _axis._calculateAxisInterval(_maximumLabel).toInt();
       if (_axis._sweepAngle != 360 &&
           ((_actualValue.round() <= _niceInterval &&
-                  _currentValue >= _axis.maximum - _niceInterval) ||
+                  _currentValue! >= _axis.maximum - _niceInterval) ||
               (_actualValue.round() >= _axis.maximum - _niceInterval &&
-                  _currentValue <= _niceInterval))) {
+                  _currentValue! <= _niceInterval))) {
         _isDragStarted = false;
         return;
       }
@@ -262,36 +262,36 @@ abstract class GaugePointer {
       if (onValueChanging != null) {
         final ValueChangingArgs args = ValueChangingArgs()
           ..value = _actualValue;
-        onValueChanging(args);
-        if (args.cancel != null && args.cancel) {
+        onValueChanging!(args);
+        if (args.cancel != null && args.cancel!) {
           return;
         }
       }
       _currentValue = _actualValue;
       _calculatePosition();
       _createPointerValueChangedArgs();
-      _axis._gauge._radialGaugeState.pointerRepaintNotifier.value++;
+      _axis._gauge._radialGaugeState.pointerRepaintNotifier!.value++;
     }
   }
 
   /// Method to fire the on value change end event
   void _createPointerValueChangeEndArgs() {
     if (onValueChangeEnd != null) {
-      onValueChangeEnd(_currentValue);
+      onValueChangeEnd!(_currentValue);
     }
   }
 
   /// Method to fire the on value changed event
   void _createPointerValueChangedArgs() {
     if (onValueChanged != null) {
-      onValueChanged(_currentValue);
+      onValueChanged!(_currentValue);
     }
   }
 
   /// Method to fire the on value change start event
   void _createPointerValueChangeStartArgs() {
     if (onValueChangeStart != null) {
-      onValueChangeStart(_currentValue);
+      onValueChangeStart!(_currentValue);
     }
   }
 
@@ -300,6 +300,6 @@ abstract class GaugePointer {
     return enableAnimation &&
         animationDuration > 0 &&
         _needsAnimate != null &&
-        _needsAnimate;
+        _needsAnimate!;
   }
 }

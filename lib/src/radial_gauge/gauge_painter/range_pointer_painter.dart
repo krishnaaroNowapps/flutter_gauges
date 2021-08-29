@@ -4,7 +4,7 @@ part of gauges;
 class _RangePointerPainter extends CustomPainter {
   /// Creates the range pointer
   _RangePointerPainter(this._gauge, this._axis, this._rangePointer,
-      this._isRepaint, this._pointerAnimation, ValueNotifier<num> notifier)
+      this._isRepaint, this._pointerAnimation, ValueNotifier<num>? notifier)
       : super(repaint: notifier);
 
   /// Specifies the circular gauge
@@ -20,21 +20,21 @@ class _RangePointerPainter extends CustomPainter {
   final bool _isRepaint;
 
   /// Specifies the pointer animation
-  final Animation<double> _pointerAnimation;
+  final Animation<double>? _pointerAnimation;
 
   /// Specifies the gradient color for the range pointer;
-  Gradient _gradient;
+  late Gradient _gradient;
 
   /// Holds the color for gradient
-  List<Color> _gradientColors;
+  late List<Color> _gradientColors;
 
   /// Specifies whether the painting style is fill
-  bool _isFill;
+  late bool _isFill;
 
   @override
   void paint(Canvas canvas, Size size) {
     final bool _needsToAnimatePointer = _needsPointerAnimation();
-    double _sweepRadian =
+    double? _sweepRadian =
         _getPointerSweepRadian(_rangePointer._sweepCornerRadian);
     final double _outerRadius = _axis._radius - _rangePointer._totalOffset;
     final double _innerRadius =
@@ -44,11 +44,11 @@ class _RangePointerPainter extends CustomPainter {
             math.pi *
             (_innerRadius + _outerRadius) /
             2 *
-            _radianToDegree(_rangePointer._sweepCornerRadian) /
+            _radianToDegree(_rangePointer._sweepCornerRadian!) /
             360)
         .abs();
     final Path path = Path();
-    if (_rangePointer._currentValue > _axis.minimum) {
+    if (_rangePointer._currentValue! > _axis.minimum) {
       canvas.save();
       canvas.translate(_axis._axisSize.width / 2 - _axis._centerX,
           _axis._axisSize.height / 2 - _axis._centerY);
@@ -73,20 +73,20 @@ class _RangePointerPainter extends CustomPainter {
           path.addArc(
               Rect.fromCircle(center: const Offset(0, 0), radius: _outerRadius),
               _rangePointer._startCornerRadian,
-              _sweepRadian);
+              _sweepRadian!);
         }
 
         if (_rangePointer.cornerStyle == CornerStyle.endCurve ||
             _rangePointer.cornerStyle == CornerStyle.bothCurve) {
           if (_needsToAnimatePointer) {
-            _drawEndCurve(path, _sweepRadian, _innerRadius, _outerRadius);
+            _drawEndCurve(path, _sweepRadian!, _innerRadius, _outerRadius);
           }
         }
 
         if (_needsToAnimatePointer) {
           path.arcTo(
               Rect.fromCircle(center: const Offset(0, 0), radius: _innerRadius),
-              _sweepRadian + _rangePointer._startCornerRadian,
+              _sweepRadian! + _rangePointer._startCornerRadian,
               -_sweepRadian,
               false);
         }
@@ -96,7 +96,7 @@ class _RangePointerPainter extends CustomPainter {
             ? _sweepRadian
             : _degreeToRadian(_rangePointer._endArc);
 
-        path.addArc(_rangePointer._arcRect, 0, _sweepRadian);
+        path.addArc(_rangePointer._arcRect!, 0, _sweepRadian!);
       }
 
       final Paint paint = _getPointerPaint(_rangePointer._arcRect);
@@ -110,8 +110,8 @@ class _RangePointerPainter extends CustomPainter {
   void _drawStartCurve(Path path, double _innerRadius, double _outerRadius) {
     final Offset midPoint = _degreeToPoint(
         _axis.isInversed
-            ? -_rangePointer._cornerAngle
-            : _rangePointer._cornerAngle,
+            ? -_rangePointer._cornerAngle!
+            : _rangePointer._cornerAngle!,
         (_innerRadius + _outerRadius) / 2,
         const Offset(0, 0));
     final double midStartAngle = _degreeToRadian(180);
@@ -128,13 +128,13 @@ class _RangePointerPainter extends CustomPainter {
   ///Draws the end corner curve
   void _drawEndCurve(Path path, double _sweepRadian, double _innerRadius,
       double _outerRadius) {
-    final double _cornerAngle =
+    final double? _cornerAngle =
         _rangePointer.cornerStyle == CornerStyle.bothCurve
             ? _rangePointer._cornerAngle
             : 0;
     final double _angle = _axis.isInversed
-        ? _radianToDegree(_sweepRadian) - _cornerAngle
-        : _radianToDegree(_sweepRadian) + _cornerAngle;
+        ? _radianToDegree(_sweepRadian) - _cornerAngle!
+        : _radianToDegree(_sweepRadian) + _cornerAngle!;
     final Offset midPoint = _degreeToPoint(
         _angle, (_innerRadius + _outerRadius) / 2, const Offset(0, 0));
 
@@ -153,7 +153,7 @@ class _RangePointerPainter extends CustomPainter {
   }
 
   /// Updates the range pointer animation based on the sweep angle
-  void _updateAnimation(double _sweepRadian) {
+  void _updateAnimation(double? _sweepRadian) {
     final bool _isPointerEndAngle = _isEndAngle(_sweepRadian);
 
     if (_rangePointer._isPointerAnimationEnabled() && _isPointerEndAngle) {
@@ -162,14 +162,14 @@ class _RangePointerPainter extends CustomPainter {
 
     if (_gauge._needsToAnimatePointers &&
         _gauge.axes[_gauge.axes.length - 1] == _axis &&
-        _axis.pointers[_axis.pointers.length - 1] == _rangePointer &&
-        (_isPointerEndAngle || _pointerAnimation.isCompleted)) {
+        _axis.pointers![_axis.pointers!.length - 1] == _rangePointer &&
+        (_isPointerEndAngle || _pointerAnimation!.isCompleted)) {
       _gauge._needsToAnimatePointers = false;
     }
   }
 
   /// Checks whether the current angle is end angle
-  bool _isEndAngle(double _sweepRadian) {
+  bool _isEndAngle(double? _sweepRadian) {
     return _sweepRadian == _rangePointer._sweepCornerRadian ||
         (_rangePointer.cornerStyle != CornerStyle.bothFlat &&
             _isFill &&
@@ -177,10 +177,10 @@ class _RangePointerPainter extends CustomPainter {
   }
 
   /// Returns the sweep radian for pointer
-  double _getPointerSweepRadian(double _sweepRadian) {
+  double? _getPointerSweepRadian(double? _sweepRadian) {
     if (_gauge._needsToAnimatePointers ||
         _rangePointer._isPointerAnimationEnabled()) {
-      return _degreeToRadian(_axis._sweepAngle * _pointerAnimation.value);
+      return _degreeToRadian(_axis._sweepAngle! * _pointerAnimation!.value);
     } else {
       return _sweepRadian;
     }
@@ -189,48 +189,47 @@ class _RangePointerPainter extends CustomPainter {
   /// Returns whether to animate the pointers
   bool _needsPointerAnimation() {
     return _pointerAnimation == null ||
-        !_rangePointer._needsAnimate ||
-        (_pointerAnimation.value.abs() > 0 &&
-            (_gauge._needsToAnimatePointers || _rangePointer._needsAnimate));
+        !_rangePointer._needsAnimate! ||
+        (_pointerAnimation!.value.abs() > 0 &&
+            (_gauge._needsToAnimatePointers || _rangePointer._needsAnimate!));
   }
 
   /// Returns the paint for the pointer
-  Paint _getPointerPaint(Rect _rect) {
+  Paint _getPointerPaint(Rect? _rect) {
     final Paint _paint = Paint()
-      ..color = _rangePointer.color ?? _gauge._gaugeTheme.rangePointerColor
+      ..color = _rangePointer.color ?? _gauge._gaugeTheme.rangePointerColor!
       ..strokeWidth = _rangePointer._actualRangeThickness
       ..style = _isFill ? PaintingStyle.fill : PaintingStyle.stroke;
     if (_rangePointer.gradient != null &&
-        _rangePointer.gradient.colors != null &&
-        _rangePointer.gradient.colors.isNotEmpty) {
+        _rangePointer.gradient!.colors.isNotEmpty) {
       final double _sweepAngle =
-          _radianToDegree(_rangePointer._sweepCornerRadian).abs();
-      final List<double> _offsets = _getGradientOffsets();
-      _gradientColors = _rangePointer.gradient.colors;
+          _radianToDegree(_rangePointer._sweepCornerRadian!).abs();
+      final List<double>? _offsets = _getGradientOffsets()!;
+      _gradientColors = _rangePointer.gradient!.colors;
       if (_axis.isInversed) {
-        _gradientColors = _rangePointer.gradient.colors.reversed.toList();
+        _gradientColors = _rangePointer.gradient!.colors.reversed.toList();
       }
       _gradient = SweepGradient(
           colors: _gradientColors,
           stops:
               _calculateGradientStops(_offsets, _axis.isInversed, _sweepAngle));
-      _paint.shader = _gradient.createShader(_rect);
+      _paint.shader = _gradient.createShader(_rect!);
     }
 
     return _paint;
   }
 
   /// Returns the gradient offset
-  List<double> _getGradientOffsets() {
-    if (_rangePointer.gradient.stops != null &&
-        _rangePointer.gradient.stops.isNotEmpty) {
-      return _rangePointer.gradient.stops;
+  List<double>? _getGradientOffsets() {
+    if (_rangePointer.gradient!.stops != null &&
+        _rangePointer.gradient!.stops!.isNotEmpty) {
+      return _rangePointer.gradient!.stops;
     } else {
-      final double _difference = 1 / _rangePointer.gradient.colors.length;
-      final List<double> _offsets =
-          List<double>(_rangePointer.gradient.colors.length);
-      for (int i = 0; i < _rangePointer.gradient.colors.length; i++) {
-        _offsets[i] = i * _difference;
+      final double _difference = 1 / _rangePointer.gradient!.colors.length;
+      final List<double>? _offsets =
+          List<double>.filled(_rangePointer.gradient!.colors.length, 0, growable: false);
+      for (int i = 0; i < _rangePointer.gradient!.colors.length; i++) {
+        _offsets![i] = i * _difference;
       }
 
       return _offsets;

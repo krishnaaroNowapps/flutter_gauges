@@ -2,6 +2,20 @@
   <library name="Dart Packages" type="DartPackagesLibraryType">
     <properties>
       <option name="packageNameToDirsMap">
+        <entry key="characters">
+          <value>
+            <list>
+              <option value="$PROJECT_DIR$/../../../../flutter/.pub-cache/hosted/pub.dartlang.org/characters-1.1.0/lib" />
+            </list>
+          </value>
+        </entry>
+        <entry key="clock">
+          <value>
+            <list>
+              <option value="$PROJECT_DIR$/../../../../flutter/.pub-cache/hosted/pub.dartlang.org/clock-1.1.0/lib" />
+            </list>
+          </value>
+        </entry>
         <entry key="collection">
           <value>
             <list>
@@ -19,6 +33,7 @@
         <entry key="intl">
           <value>
             <list>
+
               <option value="$PROJECT_DIR$/../../../sdk/flutter/.pub-cache/hosted/pub.dartlang.org/intl-0.16.1/lib" />
             </list>
           </value>
@@ -26,6 +41,7 @@
         <entry key="meta">
           <value>
             <list>
+
               <option value="$PROJECT_DIR$/../../../sdk/flutter/.pub-cache/hosted/pub.dartlang.org/meta-1.1.8/lib" />
             </list>
           </value>
@@ -33,6 +49,7 @@
         <entry key="path">
           <value>
             <list>
+
               <option value="$PROJECT_DIR$/../../../sdk/flutter/.pub-cache/hosted/pub.dartlang.org/path-1.6.4/lib" />
             </list>
           </value>
