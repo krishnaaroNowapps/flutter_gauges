@@ -23,10 +23,10 @@ abstract class GaugeAxis {
       this.ticksPosition = ElementsPosition.inside,
       this.labelsPosition = ElementsPosition.inside,
       this.offsetUnit = GaugeSizeUnit.logicalPixel,
-      GaugeTextStyle axisLabelStyle,
-      AxisLineStyle axisLineStyle,
-      MajorTickStyle majorTickStyle,
-      MajorTickStyle minorTickStyle})
+      GaugeTextStyle? axisLabelStyle,
+      AxisLineStyle? axisLineStyle,
+      MajorTickStyle? majorTickStyle,
+      MajorTickStyle? minorTickStyle})
       : axisLabelStyle = axisLabelStyle ??
             GaugeTextStyle(
                 fontSize: 12.0,
@@ -38,7 +38,7 @@ abstract class GaugeAxis {
               thickness: 10,
             ),
         majorTickStyle = majorTickStyle ?? MajorTickStyle(length: 10),
-        minorTickStyle = minorTickStyle ?? MinorTickStyle(length: 5);
+        minorTickStyle = minorTickStyle as MinorTickStyle? ?? MinorTickStyle(length: 5);
 
   /// Specifies the ranges collection in gauge.
   ///
@@ -55,7 +55,7 @@ abstract class GaugeAxis {
   ///        ));
   ///}
   /// ```
-  final List<GaugeRange> ranges;
+  final List<GaugeRange>? ranges;
 
   /// Specifies the pointers collection in gauge.
   ///
@@ -71,7 +71,7 @@ abstract class GaugeAxis {
   ///        ));
   ///}
   /// ```
-  final List<GaugePointer> pointers;
+  final List<GaugePointer>? pointers;
 
   /// Specifies the annotations collection in gauge.
   ///
@@ -89,7 +89,7 @@ abstract class GaugeAxis {
   ///        ));
   ///}
   /// ```
-  final List<GaugeAnnotation> annotations;
+  final List<GaugeAnnotation>? annotations;
 
   /// The minimum value of the axis. The axis starts from this value.
   ///
@@ -134,7 +134,7 @@ abstract class GaugeAxis {
   ///        ));
   ///}
   /// ```
-  final double interval;
+  final double? interval;
 
   /// Interval of the minor ticks.
   ///
@@ -291,7 +291,7 @@ abstract class GaugeAxis {
   ///        ));
   ///}
   /// ```
-  final String labelFormat;
+  final String? labelFormat;
 
   /// Formats the axis labels with globalized label formats.
   ///
@@ -306,7 +306,7 @@ abstract class GaugeAxis {
   ///        ));
   ///}
   /// ```
-  final NumberFormat numberFormat;
+  final NumberFormat? numberFormat;
 
   /// Positions the tick lines. Tick lines can be placed either inside or outside the axis line.
   ///

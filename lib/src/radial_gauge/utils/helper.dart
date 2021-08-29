@@ -34,7 +34,7 @@ double _minMax(double value, double min, double max) {
 }
 
 // Measure the text and return the text size
-Size _measureText(String textValue, GaugeTextStyle textStyle, [int angle]) {
+Size _measureText(String? textValue, GaugeTextStyle textStyle, [int? angle]) {
   Size size;
   final TextPainter textPainter = TextPainter(
     textAlign: TextAlign.center,
@@ -55,20 +55,21 @@ Size _measureText(String textValue, GaugeTextStyle textStyle, [int angle]) {
 }
 
 /// Returns the revised gradient stop
-List<double> _calculateGradientStops(
-    List<double> _offsets, bool _isInversed, double _sweepAngle) {
-  final List<double> _gradientStops = List<double>(_offsets.length);
+List<double>? _calculateGradientStops(
+    List<double>? _offsets, bool _isInversed, double? _sweepAngle) {
+  final List<double>? _gradientStops = List<double>.filled(_offsets!.length, 0, growable: false);
   for (num i = 0; i < _offsets.length; i++) {
-    final double _offset = _offsets[i];
-    double _stop = ((_sweepAngle / 360) * _offset).abs();
+    final double _offset = _offsets[i as int];
+    double _stop = ((_sweepAngle! / 360) * _offset).abs();
     if (_isInversed) {
       _stop = 1 - _stop;
     }
-    _gradientStops[i] = _stop;
+    _gradientStops![i] = _stop;
   }
 
-  return _isInversed ? _gradientStops.reversed.toList() : _gradientStops;
+  return _isInversed ? _gradientStops!.reversed.toList() : _gradientStops;
 }
+
 
 /// Represents the circular interval list
 class _CircularIntervalList<T> {
@@ -76,28 +77,28 @@ class _CircularIntervalList<T> {
   _CircularIntervalList(this._values);
 
   /// Specifies the list of value
-  final List<T> _values;
+  final List<T>? _values;
 
   /// Specifies the index value
   int _index = 0;
 
   T get next {
-    if (_index >= _values.length) {
+    if (_index >= _values!.length) {
       _index = 0;
     }
-    return _values[_index++];
+    return _values![_index++];
   }
 }
 
 /// Method to draw the dashed path
 Path _dashPath(Path source,
-    {@required _CircularIntervalList<double> dashArray}) {
+    {required _CircularIntervalList<double> dashArray}) {
   final Path path = Path();
   const double intialValue = 0.0;
 
-  if (source == null) {
-    return null;
-  }
+  // if (source == null) {
+  //   return null;
+  // }
 
   for (final PathMetric measurePath in source.computeMetrics()) {
     double distance = intialValue;

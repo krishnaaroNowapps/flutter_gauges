@@ -13,8 +13,8 @@ class SfRadialGauge extends StatefulWidget {
   /// Creates the radial gauge
   // ignore: prefer_const_constructors_in_immutables
   SfRadialGauge(
-      {Key key,
-      List<RadialAxis> axes,
+      {Key? key,
+      List<RadialAxis>? axes,
       this.enableLoadingAnimation = false,
       this.animationDuration = 2000,
       this.title})
@@ -56,7 +56,7 @@ class SfRadialGauge extends StatefulWidget {
   ///        ));
   ///}
   /// ```
-  final GaugeTitle title;
+  final GaugeTitle? title;
 
   /// Specifies the load time animation of gauge.
   ///
@@ -83,22 +83,22 @@ class SfRadialGauge extends StatefulWidget {
   final double animationDuration;
 
   /// Holds the circular gauge state
-  _SfRadialGaugeState _radialGaugeState;
+  late _SfRadialGaugeState _radialGaugeState;
 
   /// Represents the gauge theme
-  GaugeTheme _gaugeTheme;
+  late GaugeTheme _gaugeTheme;
 
   /// Specifies whether to animate axes
-  bool _needsToAnimateAxes;
+  late bool _needsToAnimateAxes;
 
   /// Specifies whether to animate ranges
-  bool _needsToAnimateRanges;
+  late bool _needsToAnimateRanges;
 
   /// Specifies whether to animate pointers
-  bool _needsToAnimatePointers;
+  late bool _needsToAnimatePointers;
 
   /// Specifies whether to animate annotation
-  bool _needsToAnimateAnnotation;
+  late bool _needsToAnimateAnnotation;
 
   @override
   State<StatefulWidget> createState() {
@@ -110,19 +110,19 @@ class SfRadialGauge extends StatefulWidget {
 class _SfRadialGaugeState extends State<SfRadialGauge>
     with SingleTickerProviderStateMixin {
   /// Holds the pointer repaint notifier
-  ValueNotifier<int> pointerRepaintNotifier;
+  ValueNotifier<int>? pointerRepaintNotifier;
 
   /// Holds the range repaint notifier
-  ValueNotifier<int> rangeRepaintNotifier;
+  ValueNotifier<int>? rangeRepaintNotifier;
 
   /// Holds the axis repaint notifier
-  ValueNotifier<int> axisRepaintNotifier;
+  ValueNotifier<int>? axisRepaintNotifier;
 
   /// Holds the animation controller
-  AnimationController animationController;
+  AnimationController? animationController;
 
   /// Holds the animation value
-  Animation<double> animation;
+  Animation<double>? animation;
 
   @override
   void initState() {
@@ -141,10 +141,10 @@ class _SfRadialGaugeState extends State<SfRadialGauge>
         widget.enableLoadingAnimation && widget.animationDuration > 0;
     if (widget.axes != null && widget.axes.isNotEmpty) {
       for (num i = 0; i < widget.axes.length; i++) {
-        final RadialAxis axis = widget.axes[i];
-        if (axis.pointers != null && axis.pointers.isNotEmpty) {
-          for (num j = 0; j < axis.pointers.length; j++) {
-            final GaugePointer _pointer = axis.pointers[j];
+        final RadialAxis axis = widget.axes[i as int];
+        if (axis.pointers != null && axis.pointers!.isNotEmpty) {
+          for (num j = 0; j < axis.pointers!.length; j++) {
+            final GaugePointer _pointer = axis.pointers![j as int];
             _pointer._needsAnimate = true;
             _pointer._animationStartValue =
                 axis.isInversed && !(_pointer is RangePointer) ? 1 : 0;
@@ -172,15 +172,15 @@ class _SfRadialGaugeState extends State<SfRadialGauge>
   @override
   void dispose() {
     if (animationController != null) {
-      animationController.removeListener(_repaintGaugeElements);
-      animationController.dispose();
+      animationController!.removeListener(_repaintGaugeElements);
+      animationController!.dispose();
     }
 
     if (widget.axes != null && widget.axes.isNotEmpty) {
       for (int i = 0; i < widget.axes.length; i++) {
         final RadialAxis _axis = widget.axes[i];
         if (_axis._imageStream != null) {
-          _axis._imageStream.removeListener(_axis._listener);
+          _axis._imageStream!.removeListener(_axis._listener);
         }
       }
     }
@@ -191,25 +191,25 @@ class _SfRadialGaugeState extends State<SfRadialGauge>
   /// Method to repaint the gauge elements
   void _repaintGaugeElements() {
     if (widget._needsToAnimateAxes) {
-      axisRepaintNotifier.value++;
+      axisRepaintNotifier!.value++;
     }
 
     if (widget._needsToAnimateRanges) {
-      rangeRepaintNotifier.value++;
+      rangeRepaintNotifier!.value++;
     }
 
-    pointerRepaintNotifier.value++;
+    pointerRepaintNotifier!.value++;
   }
 
   /// Method to check whether the gauge needs to be repainted
   void _needsRepaintGauge(SfRadialGauge oldGauge, SfRadialGauge newGauge) {
     if (oldGauge.axes != null && oldGauge.axes.length == newGauge.axes.length) {
       for (num i = 0; i < newGauge.axes.length; i++) {
-        _needsRepaintAxis(oldGauge.axes[i], newGauge.axes[i]);
+        _needsRepaintAxis(oldGauge.axes[i as int], newGauge.axes[i]);
       }
     } else {
       for (num i = 0; i < newGauge.axes.length; i++) {
-        newGauge.axes[i]._needsRepaintAxis = true;
+        newGauge.axes[i as int]._needsRepaintAxis = true;
       }
     }
   }
@@ -274,10 +274,10 @@ class _SfRadialGaugeState extends State<SfRadialGauge>
   /// Compares the old annotations with new annotation
   void _checkGaugeAnnotation(RadialAxis oldAxis, RadialAxis newAxis) {
     if (oldAxis.annotations != null) {
-      if (newAxis.annotations.length == oldAxis.annotations.length) {
-        for (num i = 0; i < newAxis.annotations.length; i++) {
-          final GaugeAnnotation _newAnnotation = newAxis.annotations[i];
-          final GaugeAnnotation _oldAnnotation = oldAxis.annotations[i];
+      if (newAxis.annotations!.length == oldAxis.annotations!.length) {
+        for (num i = 0; i < newAxis.annotations!.length; i++) {
+          final GaugeAnnotation _newAnnotation = newAxis.annotations![i as int];
+          final GaugeAnnotation _oldAnnotation = oldAxis.annotations![i];
           if (_newAnnotation.angle == _oldAnnotation.angle &&
               _newAnnotation.axisValue == _oldAnnotation.axisValue &&
               _newAnnotation.horizontalAlignment ==
@@ -301,10 +301,10 @@ class _SfRadialGaugeState extends State<SfRadialGauge>
   void _needsRepaintRange(RadialAxis oldAxis, RadialAxis newAxis) {
     if (newAxis.ranges != null) {
       if (oldAxis.ranges != null) {
-        if (newAxis.ranges.length == oldAxis.ranges.length) {
-          for (num i = 0; i < newAxis.ranges.length; i++) {
-            final GaugeRange _newRange = newAxis.ranges[i];
-            final GaugeRange _oldRange = oldAxis.ranges[i];
+        if (newAxis.ranges!.length == oldAxis.ranges!.length) {
+          for (num i = 0; i < newAxis.ranges!.length; i++) {
+            final GaugeRange _newRange = newAxis.ranges![i as int];
+            final GaugeRange _oldRange = oldAxis.ranges![i];
             if (_newRange.startValue != _oldRange.startValue ||
                 _newRange.endValue != _oldRange.endValue ||
                 _newRange.startWidth != _oldRange.startWidth ||
@@ -317,7 +317,7 @@ class _SfRadialGaugeState extends State<SfRadialGauge>
                 _newRange.labelStyle != _oldRange.labelStyle) {
               _newRange._needsRepaintRange = true;
             } else {
-              if (newAxis._needsRepaintAxis) {
+              if (newAxis._needsRepaintAxis!) {
                 _newRange._needsRepaintRange = true;
               } else {
                 _newRange._needsRepaintRange = false;
@@ -325,13 +325,13 @@ class _SfRadialGaugeState extends State<SfRadialGauge>
             }
           }
         } else {
-          for (num i = 0; i < newAxis.ranges.length; i++) {
-            newAxis.ranges[i]._needsRepaintRange = true;
+          for (num i = 0; i < newAxis.ranges!.length; i++) {
+            newAxis.ranges![i as int]._needsRepaintRange = true;
           }
         }
       } else {
-        for (num i = 0; i < newAxis.ranges.length; i++) {
-          newAxis.ranges[i]._needsRepaintRange = true;
+        for (num i = 0; i < newAxis.ranges!.length; i++) {
+          newAxis.ranges![i as int]._needsRepaintRange = true;
         }
       }
     }
@@ -341,12 +341,12 @@ class _SfRadialGaugeState extends State<SfRadialGauge>
   void _needsRepaintPointer(RadialAxis oldAxis, RadialAxis newAxis) {
     if (newAxis.pointers != null) {
       if (oldAxis.pointers != null) {
-        if (newAxis.pointers.length == oldAxis.pointers.length) {
+        if (newAxis.pointers!.length == oldAxis.pointers!.length) {
           _needsAnimatePointers(oldAxis, newAxis);
           _needsResetPointerValue(oldAxis, newAxis);
-          for (num i = 0; i < newAxis.pointers.length; i++) {
-            final GaugePointer _newPointer = newAxis.pointers[i];
-            final GaugePointer _oldPointer = oldAxis.pointers[i];
+          for (num i = 0; i < newAxis.pointers!.length; i++) {
+            final GaugePointer _newPointer = newAxis.pointers![i as int];
+            final GaugePointer _oldPointer = oldAxis.pointers![i];
 
             if (_newPointer.enableDragging != _oldPointer.enableDragging ||
                 _newPointer.onValueChanged != _oldPointer.onValueChanged ||
@@ -375,8 +375,8 @@ class _SfRadialGaugeState extends State<SfRadialGauge>
             }
           }
         } else {
-          for (num i = 0; i < newAxis.pointers.length; i++) {
-            newAxis.pointers[i]._needsRepaintPointer = true;
+          for (num i = 0; i < newAxis.pointers!.length; i++) {
+            newAxis.pointers![i as int]._needsRepaintPointer = true;
           }
         }
       }
@@ -411,7 +411,7 @@ class _SfRadialGaugeState extends State<SfRadialGauge>
         _newPointer.cornerStyle != _oldPointer.cornerStyle) {
       _newPointer._needsRepaintPointer = true;
     } else {
-      if (newAxis._needsRepaintAxis) {
+      if (newAxis._needsRepaintAxis!) {
         _newPointer._needsRepaintPointer = true;
       } else {
         _newPointer._needsRepaintPointer = false;
@@ -431,7 +431,7 @@ class _SfRadialGaugeState extends State<SfRadialGauge>
         _newMarker.textStyle != _oldMarker.textStyle) {
       _newMarker._needsRepaintPointer = true;
     } else {
-      if (newAxis._needsRepaintAxis) {
+      if (newAxis._needsRepaintAxis!) {
         _newMarker._needsRepaintPointer = true;
       } else {
         _newMarker._needsRepaintPointer = false;
@@ -441,19 +441,19 @@ class _SfRadialGaugeState extends State<SfRadialGauge>
 
   /// Checks whether to animate the pointers
   void _needsAnimatePointers(RadialAxis oldAxis, RadialAxis newAxis) {
-    for (num i = 0; i < newAxis.pointers.length; i++) {
-      if (oldAxis.pointers[i].value != newAxis.pointers[i].value) {
+    for (num i = 0; i < newAxis.pointers!.length; i++) {
+      if (oldAxis.pointers![i as int].value != newAxis.pointers![i].value) {
         setState(() {
-          newAxis.pointers[i]._needsAnimate = true;
-          newAxis.pointers[i]._animationStartValue =
-              oldAxis.pointers[i]._animationEndValue;
+          newAxis.pointers![i as int]._needsAnimate = true;
+          newAxis.pointers![i]._animationStartValue =
+              oldAxis.pointers![i]._animationEndValue;
         });
-      } else if (oldAxis.pointers[i].animationType !=
-          newAxis.pointers[i].animationType) {
-        newAxis.pointers[i]._needsAnimate = true;
+      } else if (oldAxis.pointers![i].animationType !=
+          newAxis.pointers![i].animationType) {
+        newAxis.pointers![i]._needsAnimate = true;
       } else {
         setState(() {
-          newAxis.pointers[i]._needsAnimate = false;
+          newAxis.pointers![i as int]._needsAnimate = false;
         });
       }
     }
@@ -461,17 +461,17 @@ class _SfRadialGaugeState extends State<SfRadialGauge>
 
   /// Check to reset the pointer current value
   void _needsResetPointerValue(RadialAxis oldAxis, RadialAxis newAxis) {
-    for (num i = 0; i < newAxis.pointers.length; i++) {
-      if (oldAxis.pointers[i].enableDragging ==
-          newAxis.pointers[i].enableDragging) {
-        if (oldAxis.pointers[i].value == newAxis.pointers[i].value &&
-            newAxis.pointers[i].value == newAxis.pointers[i]._currentValue &&
-            oldAxis.pointers[i]._currentValue !=
-                newAxis.pointers[i]._currentValue) {
-          newAxis.pointers[i]._currentValue = oldAxis.pointers[i]._currentValue;
+    for (num i = 0; i < newAxis.pointers!.length; i++) {
+      if (oldAxis.pointers![i as int].enableDragging ==
+          newAxis.pointers![i].enableDragging) {
+        if (oldAxis.pointers![i].value == newAxis.pointers![i].value &&
+            newAxis.pointers![i].value == newAxis.pointers![i]._currentValue &&
+            oldAxis.pointers![i]._currentValue !=
+                newAxis.pointers![i]._currentValue) {
+          newAxis.pointers![i]._currentValue = oldAxis.pointers![i]._currentValue;
         }
 
-        newAxis.pointers[i]._isDragStarted = oldAxis.pointers[i]._isDragStarted;
+        newAxis.pointers![i]._isDragStarted = oldAxis.pointers![i]._isDragStarted;
       }
     }
   }
@@ -492,28 +492,28 @@ class _SfRadialGaugeState extends State<SfRadialGauge>
 
   /// Methods to add the title of circular gauge
   Widget _addGaugeTitle() {
-    if (widget.title != null && widget.title.text.isNotEmpty) {
+    if (widget.title != null && widget.title!.text.isNotEmpty) {
       final Widget titleWidget = Container(
           child: Container(
               padding: const EdgeInsets.fromLTRB(0, 5, 0, 0),
               decoration: BoxDecoration(
-                  color: widget.title.backgroundColor ??
+                  color: widget.title!.backgroundColor ??
                       widget._gaugeTheme.titleBackgroundColor,
                   border: Border.all(
-                      color: widget.title.borderColor ??
-                          widget._gaugeTheme.titleBorderColor,
-                      width: widget.title.borderWidth)),
+                      color: widget.title!.borderColor ??
+                          widget._gaugeTheme.titleBorderColor!,
+                      width: widget.title!.borderWidth)),
               child: Text(
-                widget.title.text,
-                style: widget.title.textStyle,
+                widget.title!.text,
+                style: widget.title!.textStyle,
                 textAlign: TextAlign.center,
                 overflow: TextOverflow.clip,
               ),
-              alignment: (widget.title.alignment == GaugeAlignment.near)
+              alignment: (widget.title!.alignment == GaugeAlignment.near)
                   ? Alignment.topLeft
-                  : (widget.title.alignment == GaugeAlignment.far)
+                  : (widget.title!.alignment == GaugeAlignment.far)
                       ? Alignment.topRight
-                      : (widget.title.alignment == GaugeAlignment.center)
+                      : (widget.title!.alignment == GaugeAlignment.center)
                           ? Alignment.topCenter
                           : Alignment.topCenter));
 

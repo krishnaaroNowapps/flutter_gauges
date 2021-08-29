@@ -4,7 +4,7 @@ part of gauges;
 class _RangePainter extends CustomPainter {
   /// Creates the range painter
   _RangePainter(this._gauge, this._axis, this._range, this._isRepaint,
-      this._rangeAnimation, ValueNotifier<num> notifier)
+      this._rangeAnimation, ValueNotifier<num>? notifier)
       : super(repaint: notifier);
 
   /// Specifies the circular gauge
@@ -20,7 +20,7 @@ class _RangePainter extends CustomPainter {
   final bool _isRepaint;
 
   /// Specifies the range animation
-  final Animation<double> _rangeAnimation;
+  final Animation<double>? _rangeAnimation;
 
   @override
   bool shouldRepaint(_RangePainter oldDelegate) => _isRepaint;
@@ -50,9 +50,9 @@ class _RangePainter extends CustomPainter {
         paint = _getRangePaint(true, _range._pathRect, 0);
         canvas.drawPath(path, paint);
       } else {
-        paint = _getRangePaint(false, _range._rangeRect, _range._thickness);
+        paint = _getRangePaint(false, _range._rangeRect, _range._thickness!);
         canvas.drawArc(
-            _range._rangeRect, 0, _range._rangeEndRadian, false, paint);
+            _range._rangeRect!, 0, _range._rangeEndRadian, false, paint);
       }
       canvas.restore();
     }
@@ -62,48 +62,48 @@ class _RangePainter extends CustomPainter {
     }
 
     if (_gauge.axes[_gauge.axes.length - 1] == _axis &&
-        _axis.ranges[_axis.ranges.length - 1] == _range &&
+        _axis.ranges![_axis.ranges!.length - 1] == _range &&
         _rangeAnimation != null &&
-        _rangeAnimation.value == 1) {
+        _rangeAnimation!.value == 1) {
       _gauge._needsToAnimateRanges = false;
     }
   }
 
   /// Returns the paint for the range
-  Paint _getRangePaint(bool _isFill, Rect _rect, double _strokeWidth) {
+  Paint _getRangePaint(bool _isFill, Rect? _rect, double _strokeWidth) {
     double _opacity = 1;
     if (_rangeAnimation != null) {
-      _opacity = _rangeAnimation.value;
+      _opacity = _rangeAnimation!.value;
     }
 
     final Paint paint = Paint()
       ..style = _isFill ? PaintingStyle.fill : PaintingStyle.stroke
       ..strokeWidth = _strokeWidth
-      ..color = _range.color ?? _gauge._gaugeTheme.rangeColor;
+      ..color = _range.color ?? _gauge._gaugeTheme.rangeColor!;
     final double _actualOpacity = paint.color.opacity;
     paint.color = paint.color.withOpacity(_opacity * _actualOpacity);
     if (_range.gradient != null &&
-        _range.gradient.colors != null &&
-        _range.gradient.colors.isNotEmpty) {
-      List<Color> _colors = _range.gradient.colors;
+        _range.gradient!.colors != null &&
+        _range.gradient!.colors.isNotEmpty) {
+      List<Color> _colors = _range.gradient!.colors;
       if (_axis.isInversed) {
-        _colors = _range.gradient.colors.reversed.toList();
+        _colors = _range.gradient!.colors.reversed.toList();
       }
 
-      paint.shader = SweepGradient(colors: _colors, stops: _getGradientStops())
-          .createShader(_rect);
+      paint.shader = SweepGradient(colors: _colors, stops: _getGradientStops() as List<double>?)
+          .createShader(_rect!);
     }
     return paint;
   }
 
   /// To calculate the gradient stop based on the sweep angle
-  List<double> _getGradientStops() {
+  List<double>? _getGradientStops() {
     final double _sweepRadian =
         _range._actualStartWidth != _range._actualEndWidth
             ? _range._rangeEndRadian - _range._rangeStartRadian
             : _range._rangeEndRadian;
     double _rangeStartAngle =
-        _axis.valueToFactor(_range._actualStartValue) * _axis._sweepAngle +
+        _axis.valueToFactor(_range._actualStartValue!) * _axis._sweepAngle! +
             _axis.startAngle;
     if (_rangeStartAngle < 0) {
       _rangeStartAngle += 360;
@@ -119,14 +119,14 @@ class _RangePainter extends CustomPainter {
   }
 
   /// Returns the gradient stop of axis line gradient
-  List<double> _getGradientOffset() {
-    if (_range.gradient.stops != null && _range.gradient.stops.isNotEmpty) {
-      return _range.gradient.stops;
+  List<double>? _getGradientOffset() {
+    if (_range.gradient!.stops != null && _range.gradient!.stops!.isNotEmpty) {
+      return _range.gradient!.stops;
     } else {
-      final double _difference = 1 / _range.gradient.colors.length;
-      final List<double> _offsets = List<double>(_range.gradient.colors.length);
-      for (int i = 0; i < _range.gradient.colors.length; i++) {
-        _offsets[i] = i * _difference;
+      final double _difference = 1 / _range.gradient!.colors.length;
+      final List<double>? _offsets = List<double>.filled(_range.gradient!.colors.length, 0, growable: false);
+      for (int i = 0; i < _range.gradient!.colors.length; i++) {
+        _offsets![i] = i * _difference;
       }
 
       return _offsets;
@@ -137,14 +137,14 @@ class _RangePainter extends CustomPainter {
   void _renderRangeText(Canvas canvas) {
     double _opacity = 1;
     if (_rangeAnimation != null) {
-      _opacity = _rangeAnimation.value;
+      _opacity = _rangeAnimation!.value;
     }
 
-    final Color _color =
+    final Color? _color =
         _range.color != null ? _range.color : _gauge._gaugeTheme.rangeColor;
 
     final Color _labelColor =
-        _range.labelStyle.color ?? _getSaturationColor(_color);
+        _range.labelStyle.color ?? _getSaturationColor(_color!);
     final double _actualOpacity = _labelColor.opacity;
     final TextSpan span = TextSpan(
         text: _range.label,
